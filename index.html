@@ -397,6 +397,12 @@
     .logo .beta { display: none; }
     .streak-pill { display: none; }
   }
+
+  /* ============ ランディング ============ */
+  #screen-landing .hero-landing { min-height: min(74vh, 640px); margin-top: 2px; }
+  #screen-landing .hero-inner { padding-bottom: 56px; }
+  .logo { cursor: pointer; }
+  @media (max-width: 560px) { #screen-landing .hero-landing { min-height: 72vh; } }
 </style>
 
 <nav class="appbar">
@@ -417,9 +423,8 @@
 <div class="wrap">
 
   <!-- ============ 画面1: ホーム ============ -->
-  <section id="screen-setup" class="screen active">
-
-    <div class="hero">
+  <section id="screen-landing" class="screen active">
+    <div class="hero hero-landing">
       <div class="scene hero-scene" aria-hidden="true"></div>
       <div class="hero-tint" aria-hidden="true"></div>
       <div class="hero-inner">
@@ -428,7 +433,9 @@
         <button class="hero-cta" id="heroStart">はじめる</button>
       </div>
     </div>
+  </section>
 
+  <section id="screen-setup" class="screen">
     <div class="stats-row" id="statsRow"></div>
 
     <div class="setup" id="setupSection">
@@ -1544,7 +1551,19 @@
   });
 
   $("heroStart").addEventListener("click", function () {
-    $("setupSection").scrollIntoView({ behavior: "smooth", block: "start" });
+    renderHome();
+    showScreen("setup");
+    window.scrollTo({ top: 0 });
+  });
+
+  /* ロゴクリックでランディングへ */
+  document.querySelector(".logo").addEventListener("click", function () {
+    if ($("screen-interview").classList.contains("active")) {
+      if (!confirm("面接を中断しますか？　ここまでの回答は保存されません。")) return;
+      if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+    }
+    showScreen("landing");
+    window.scrollTo({ top: 0 });
   });
 
   $("shareBtn").addEventListener("click", function () {
@@ -1590,7 +1609,8 @@
   });
   function syncNav(name) {
     navTabs.forEach(function (b) {
-      b.classList.toggle("on", b.dataset.nav === name || (name === "feedback" && b.dataset.nav === "setup") || (name === "interview" && b.dataset.nav === "setup"));
+      var asSetup = name === "feedback" || name === "interview" || name === "landing";
+      b.classList.toggle("on", b.dataset.nav === name || (asSetup && b.dataset.nav === "setup"));
     });
   }
 
@@ -2127,7 +2147,7 @@
   }
 
   function showScreen(name) {
-    ["setup", "interview", "feedback", "history"].forEach(function (n) {
+    ["landing", "setup", "interview", "feedback", "history"].forEach(function (n) {
       $("screen-" + n).classList.toggle("active", n === name);
     });
     syncNav(name);
