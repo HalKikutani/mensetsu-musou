@@ -405,7 +405,45 @@
   @media (max-width: 560px) { #screen-landing .hero-landing { min-height: 72vh; } }
 
   .company-list { margin-top: 10px; line-height: 2; color: var(--ink-3); }
+
+  /* ============ 合言葉ゲート ============ */
+  html.locked .appbar, html.locked .wrap { display: none; }
+  .gate {
+    position: fixed; inset: 0; z-index: 100; background: var(--bg);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .gate-box { width: 100%; max-width: 340px; text-align: center; }
+  .gate-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -.015em; margin-bottom: 6px; }
+  .gate-lead { color: var(--ink-2); font-size: .9rem; margin: 0 0 22px; }
+  #gateInput {
+    width: 100%; padding: 12px 16px; font-size: 1.05rem; text-align: center;
+    border: 1px solid var(--hairline); border-radius: 12px;
+    background: #fff; color: var(--ink); font-family: var(--sans);
+  }
+  #gateInput:focus-visible { border-color: var(--blue); box-shadow: 0 0 0 4px var(--focus-ring); }
+  .gate-box .btn-primary { width: 100%; margin-top: 12px; }
+  .gate-err { color: var(--bad); font-size: .82rem; min-height: 1.3em; margin: 12px 0 0; font-weight: 600; }
 </style>
+
+<div id="gate" class="gate" style="display:none;" role="dialog" aria-label="合言葉">
+  <div class="gate-box">
+    <div class="gate-logo">面接無双</div>
+    <p class="gate-lead">合言葉を入力してください</p>
+    <input id="gateInput" type="password" placeholder="合言葉" autocomplete="off" spellcheck="false" aria-label="合言葉">
+    <button id="gateBtn" class="btn-primary">開く</button>
+    <p class="gate-err" id="gateErr" aria-live="polite"></p>
+  </div>
+</div>
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("mm_gate_v1") !== "ok") throw 0;
+  } catch (e) {
+    document.documentElement.classList.add("locked");
+    document.getElementById("gate").style.display = "flex";
+  }
+})();
+</script>
 
 <nav class="appbar">
   <div class="appbar-in">
@@ -2414,6 +2452,35 @@
     });
     syncNav(name);
   }
+
+  /* ---- 合言葉ゲート ---- */
+  (function () {
+    var OK = { 2616303841: 1, 2527662177: 1 }; /* 正規化済み合言葉のハッシュ */
+    function norm(s) { return (s || "").toLowerCase().replace(/[\s\u3000]+/g, " ").trim(); }
+    function djb2(s) {
+      var hsh = 5381;
+      for (var i = 0; i < s.length; i++) hsh = ((hsh * 33) + s.charCodeAt(i)) >>> 0;
+      return hsh;
+    }
+    function tryUnlock() {
+      var v = norm($("gateInput").value);
+      if (OK[djb2(v)]) {
+        try { localStorage.setItem("mm_gate_v1", "ok"); } catch (e) { /* 記憶不可でも今回は通す */ }
+        document.documentElement.classList.remove("locked");
+        $("gate").style.display = "none";
+      } else {
+        $("gateErr").textContent = "合言葉が違います";
+        $("gateInput").value = "";
+        $("gateInput").focus();
+      }
+    }
+    var gb = $("gateBtn");
+    if (gb) {
+      gb.addEventListener("click", tryUnlock);
+      $("gateInput").addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+      if (document.documentElement.classList.contains("locked")) $("gateInput").focus();
+    }
+  })();
 
   /* 収録企業一覧の表示 */
   (function () {
