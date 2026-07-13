@@ -425,12 +425,12 @@
   .gate-err { color: var(--bad); font-size: .82rem; min-height: 1.3em; margin: 12px 0 0; font-weight: 600; }
 </style>
 
-<div id="gate" class="gate" style="display:none;" role="dialog" aria-label="合言葉">
+<div id="gate" class="gate" style="display:none;" role="dialog" aria-label="パスワード">
   <div class="gate-box">
     <div class="gate-logo">面接無双</div>
-    <p class="gate-lead">合言葉を入力してください</p>
-    <input id="gateInput" type="password" placeholder="合言葉" autocomplete="off" spellcheck="false" aria-label="合言葉">
-    <button id="gateBtn" class="btn-primary">開く</button>
+    <p class="gate-lead">パスワードを入力してください</p>
+    <input id="gateInput" type="password" placeholder="パスワード" autocomplete="off" spellcheck="false" aria-label="パスワード">
+    <button id="gateBtn" class="btn-primary">続ける</button>
     <p class="gate-err" id="gateErr" aria-live="polite"></p>
   </div>
 </div>
@@ -2469,7 +2469,7 @@
         document.documentElement.classList.remove("locked");
         $("gate").style.display = "none";
       } else {
-        $("gateErr").textContent = "合言葉が違います";
+        $("gateErr").textContent = "パスワードが正しくありません";
         $("gateInput").value = "";
         $("gateInput").focus();
       }
