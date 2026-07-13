@@ -407,7 +407,9 @@
   .company-list { margin-top: 10px; line-height: 2; color: var(--ink-3); }
 
   /* ============ 合言葉ゲート ============ */
-  html.locked .appbar, html.locked .wrap { display: none; }
+  /* 画面遷移: ふわっと浮き上がる */
+  .screen.active { animation: screenIn .45s cubic-bezier(.25, .1, .25, 1); }
+  @keyframes screenIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   .gate {
     position: fixed; inset: 0; z-index: 100; background: var(--bg);
     display: flex; align-items: center; justify-content: center; padding: 24px;
@@ -423,6 +425,20 @@
   #gateInput:focus-visible { border-color: var(--blue); box-shadow: 0 0 0 4px var(--focus-ring); }
   .gate-box .btn-primary { width: 100%; margin-top: 12px; }
   .gate-err { color: var(--bad); font-size: .82rem; min-height: 1.3em; margin: 12px 0 0; font-weight: 600; }
+
+  /* ゲートの入退場 */
+  .gate { animation: gateIn .3s ease; }
+  @keyframes gateIn { from { opacity: 0; } }
+  .gate-box { animation: boxIn .5s cubic-bezier(.2, .7, .3, 1); }
+  @keyframes boxIn { from { opacity: 0; transform: translateY(18px); } }
+  .gate.leaving { opacity: 0; transition: opacity .4s ease; }
+  .gate.leaving .gate-box { transform: translateY(-10px) scale(.985); opacity: 0; transition: transform .4s ease, opacity .4s ease; }
+  .gate-box.shake { animation: gateShake .4s ease; }
+  @keyframes gateShake { 20% { transform: translateX(-7px); } 45% { transform: translateX(6px); } 70% { transform: translateX(-4px); } 90% { transform: translateX(2px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .screen.active, .gate, .gate-box, .gate-box.shake { animation: none; }
+    .gate.leaving, .gate.leaving .gate-box { transition: none; }
+  }
 </style>
 
 <div id="gate" class="gate" style="display:none;" role="dialog" aria-label="パスワード">
@@ -434,17 +450,6 @@
     <p class="gate-err" id="gateErr" aria-live="polite"></p>
   </div>
 </div>
-<script>
-(function () {
-  try {
-    if (localStorage.getItem("mm_gate_v1") !== "ok") throw 0;
-  } catch (e) {
-    document.documentElement.classList.add("locked");
-    document.getElementById("gate").style.display = "flex";
-  }
-})();
-</script>
-
 <nav class="appbar">
   <div class="appbar-in">
     <span class="logo">面接無双<span class="beta">DEMO</span></span>
@@ -1851,9 +1856,7 @@
   });
 
   $("heroStart").addEventListener("click", function () {
-    renderHome();
-    showScreen("setup");
-    window.scrollTo({ top: 0 });
+    requireUnlock("setup");
   });
 
   /* ロゴクリックでランディングへ */
@@ -1866,15 +1869,34 @@
     window.scrollTo({ top: 0 });
   });
 
+  var SHARE_URL = "https://halkikutani.github.io/mensetsu-musou/";
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
   $("shareBtn").addEventListener("click", function () {
     var btn = this;
     var done = function () {
       btn.textContent = "コピーしました ✓";
       setTimeout(function () { btn.textContent = "共有"; }, 2200);
     };
+    var fail = function () {
+      window.prompt("このURLをコピーして共有してください", SHARE_URL);
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(location.href).then(done, done);
-    } else { done(); }
+      navigator.clipboard.writeText(SHARE_URL).then(done, function () {
+        if (legacyCopy(SHARE_URL)) done(); else fail();
+      });
+    } else {
+      if (legacyCopy(SHARE_URL)) done(); else fail();
+    }
   });
 
   $("companyInput").addEventListener("input", function () {
@@ -1900,6 +1922,10 @@
       if ($("screen-interview").classList.contains("active")) {
         if (!confirm("面接を中断しますか？　ここまでの回答は保存されません。")) return;
         if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+      }
+      if ((target === "setup" || target === "history") && !isUnlocked()) {
+        openGate(target);
+        return;
       }
       if (target === "history") renderHistory();
       if (target === "setup") renderHome();
@@ -2453,34 +2479,68 @@
     syncNav(name);
   }
 
-  /* ---- 合言葉ゲート ---- */
-  (function () {
-    var OK = { 2616303841: 1, 2527662177: 1 }; /* 正規化済み合言葉のハッシュ */
-    function norm(s) { return (s || "").toLowerCase().replace(/[\s\u3000]+/g, " ").trim(); }
-    function djb2(s) {
-      var hsh = 5381;
-      for (var i = 0; i < s.length; i++) hsh = ((hsh * 33) + s.charCodeAt(i)) >>> 0;
-      return hsh;
+  /* ---- パスワードゲート（「はじめる」の後に挟まる） ---- */
+  var GATE_OK = { 2616303841: 1, 2527662177: 1 }; /* 正規化済みパスワードのハッシュ */
+  var gateTarget = "setup";
+  var gateBusy = false;
+
+  function gateNorm(s) { return (s || "").toLowerCase().replace(/[\s\u3000]+/g, " ").trim(); }
+  function gateHash(s) {
+    var hsh = 5381;
+    for (var i = 0; i < s.length; i++) hsh = ((hsh * 33) + s.charCodeAt(i)) >>> 0;
+    return hsh;
+  }
+  function isUnlocked() {
+    try { return localStorage.getItem("mm_gate_v1") === "ok"; } catch (e) { return false; }
+  }
+  function openGate(target) {
+    gateTarget = target || "setup";
+    gateBusy = false;
+    var g = $("gate");
+    g.classList.remove("leaving");
+    $("gateErr").textContent = "";
+    $("gateInput").value = "";
+    $("gateBtn").textContent = "続ける";
+    g.style.display = "flex";
+    $("gateInput").focus();
+  }
+  function enterApp(target) {
+    if (target === "history") renderHistory();
+    else renderHome();
+    showScreen(target);
+    window.scrollTo({ top: 0 });
+  }
+  function requireUnlock(target) {
+    if (isUnlocked()) enterApp(target);
+    else openGate(target);
+  }
+  function tryUnlock() {
+    if (gateBusy) return;
+    var v = gateNorm($("gateInput").value);
+    if (GATE_OK[gateHash(v)]) {
+      gateBusy = true;
+      try { localStorage.setItem("mm_gate_v1", "ok"); } catch (e) { /* 記憶不可でも今回は通す */ }
+      var g = $("gate");
+      $("gateErr").textContent = "";
+      $("gateBtn").textContent = "✓";
+      setTimeout(function () { g.classList.add("leaving"); }, 160);
+      setTimeout(function () {
+        g.style.display = "none";
+        g.classList.remove("leaving");
+        enterApp(gateTarget);
+      }, 560);
+    } else {
+      $("gateErr").textContent = "パスワードが正しくありません";
+      var box = document.querySelector(".gate-box");
+      box.classList.remove("shake");
+      void box.offsetWidth;
+      box.classList.add("shake");
+      $("gateInput").value = "";
+      $("gateInput").focus();
     }
-    function tryUnlock() {
-      var v = norm($("gateInput").value);
-      if (OK[djb2(v)]) {
-        try { localStorage.setItem("mm_gate_v1", "ok"); } catch (e) { /* 記憶不可でも今回は通す */ }
-        document.documentElement.classList.remove("locked");
-        $("gate").style.display = "none";
-      } else {
-        $("gateErr").textContent = "パスワードが正しくありません";
-        $("gateInput").value = "";
-        $("gateInput").focus();
-      }
-    }
-    var gb = $("gateBtn");
-    if (gb) {
-      gb.addEventListener("click", tryUnlock);
-      $("gateInput").addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
-      if (document.documentElement.classList.contains("locked")) $("gateInput").focus();
-    }
-  })();
+  }
+  $("gateBtn").addEventListener("click", tryUnlock);
+  $("gateInput").addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
 
   /* 収録企業一覧の表示 */
   (function () {
