@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>面接無双 — AI面接練習（デモ版）</title>
 <style>
   /* ============ Apple-minimal tokens（白基調・単一テーマ） ============ */
@@ -331,6 +332,71 @@
   .hist-del { margin-left: auto; background: none; border: none; color: var(--ink-3); font-size: .74rem; text-decoration: none; }
   .hist-del:hover { text-decoration: underline; }
   .home-head-row .share-btn { padding: 9px 16px; font-size: .8rem; }
+
+  /* ============ 製品ヒーロー ============ */
+  .hero {
+    position: relative; border-radius: 24px; overflow: hidden;
+    min-height: 410px; display: flex; align-items: flex-end;
+    margin-top: 6px;
+  }
+  .hero-scene { position: absolute; inset: 0; height: 100%; }
+  .hero-tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 16, 20, .22) 0%, rgba(14, 16, 20, .38) 55%, rgba(14, 16, 20, .68) 100%); }
+  .hero-inner { position: relative; padding: 46px 48px; color: #fff; max-width: 36em; }
+  .hero-inner h1 { font-size: clamp(30px, 4.6vw, 44px); font-weight: 700; letter-spacing: -.02em; line-height: 1.22; color: #fff; }
+  .hero-inner p { margin: 14px 0 22px; font-size: .95rem; line-height: 1.9; color: rgba(255, 255, 255, .82); }
+  .hero-cta {
+    background: #fff; color: var(--ink); border: none; border-radius: 980px;
+    padding: 12px 30px; font-size: .95rem; font-weight: 600;
+    transition: transform .15s, background .15s;
+  }
+  .hero-cta:hover { background: #f2f2f4; }
+  @media (max-width: 560px) {
+    .hero { min-height: 340px; border-radius: 18px; }
+    .hero-inner { padding: 26px 22px; }
+  }
+
+  /* ============ 統計（一行スペック） ============ */
+  .stats-row { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 20px 6px 0; }
+  .stat-tile { background: none; border: none !important; padding: 0 !important; display: flex; align-items: baseline; gap: 7px; }
+  .stat-tile .v { font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; }
+  .stat-tile .v small { font-size: .72rem; font-weight: 500; color: var(--ink-2); margin-left: 1px; }
+  .stat-tile .l { font-size: .76rem; color: var(--ink-3); }
+
+  /* ============ セットアップ（設定リスト風） ============ */
+  .setup { margin-top: 60px; }
+  .setup-h { font-size: 1.35rem; font-weight: 700; letter-spacing: -.015em; margin-bottom: 8px; }
+  .setup-row {
+    display: grid; grid-template-columns: 132px 1fr; gap: 20px;
+    padding: 26px 0; border-bottom: 1px solid var(--tile-2); align-items: start;
+  }
+  .setup-row-cta { border-bottom: none; padding-bottom: 8px; }
+  .setup-key { font-size: .82rem; color: var(--ink-2); font-weight: 600; padding-top: 7px; }
+  .setup-opt { display: block; font-size: .68rem; color: var(--ink-3); font-weight: 500; margin-top: 2px; }
+  @media (max-width: 640px) {
+    .setup-row { grid-template-columns: 1fr; gap: 10px; padding: 20px 0; }
+    .setup-key { padding-top: 0; }
+    .setup-opt { display: inline; margin-left: 8px; }
+  }
+  .setup .stage-card { box-shadow: inset 0 0 0 1px var(--hairline); }
+  .setup .stage-card:hover { box-shadow: inset 0 0 0 1px var(--ink-3); }
+  .setup .stage-card[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--blue); }
+
+  /* ============ ナビ共有・注記の折りたたみ ============ */
+  .nav-share { border: none; background: none; color: var(--ink-2); font-size: .85rem; font-weight: 500; padding: 4px 0; }
+  .nav-share:hover { color: var(--ink); }
+  .note-details { margin-top: 64px; color: var(--ink-3); font-size: .76rem; max-width: 52em; }
+  .note-details summary { cursor: pointer; font-weight: 500; color: var(--ink-3); }
+  .note-details summary:hover { color: var(--ink-2); }
+  .note-details p { margin: 10px 0 0; line-height: 1.9; }
+
+  /* ============ ナビのモバイル調整 ============ */
+  .logo, .nav-tabs button, .nav-share, .streak-pill { white-space: nowrap; }
+  @media (max-width: 560px) {
+    .appbar-in { gap: 16px; padding: 0 16px; }
+    .nav-tabs { gap: 16px; }
+    .logo .beta { display: none; }
+    .streak-pill { display: none; }
+  }
 </style>
 
 <nav class="appbar">
@@ -340,6 +406,7 @@
       <button data-nav="setup" class="on">練習する</button>
       <button data-nav="history">復習ノート</button>
     </div>
+    <button class="nav-share" id="shareBtn" title="このページのURLをコピー">共有</button>
     <span class="streak-pill" id="streakPill" title="面接練習をした連続日数">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c1.6 2.6.6 4-.6 5.4C6.2 6.8 5 8 5 10a3 3 0 0 0 6 0c0-1.2-.5-2-1-2.8 2.4.6 4 2.4 4 4.8a6 6 0 0 1-12 0C2 7.5 6.5 6 8 0z"/></svg>
       <span id="streakNum">連続0日</span>
@@ -351,36 +418,53 @@
 
   <!-- ============ 画面1: ホーム ============ -->
   <section id="screen-setup" class="screen active">
-    <div class="home-head">
-      <div class="home-head-row">
-        <h1>緊張は、練習で消せる。</h1>
-        <button class="btn-ghost share-btn" id="shareBtn" title="このページのURLをコピーします">共有リンクをコピー</button>
+
+    <div class="hero">
+      <div class="scene hero-scene" aria-hidden="true"></div>
+      <div class="hero-tint" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <h1>志望企業の面接を、<br>何度でも。</h1>
+        <p>実際に出た質問、その場の深掘り、終わったら添削レポート。磨き直しは復習ノートで。1回約20分。</p>
+        <button class="hero-cta" id="heroStart">はじめる</button>
       </div>
-      <p>志望企業で実際に出た質問に答えて、深掘りされて、添削される。ここは本番前の壁打ち場。1回約20分。</p>
     </div>
 
     <div class="stats-row" id="statsRow"></div>
 
-    <div class="card setup-card">
-      <div class="step-label"><span class="step-num">STEP 1</span><b>志望業界を選ぶ</b></div>
-      <div class="chips" id="industryChips" role="group" aria-label="志望業界"></div>
+    <div class="setup" id="setupSection">
+      <h2 class="setup-h">面接をセットアップ</h2>
 
-      <div class="step-label"><span class="step-num">STEP 2</span><b>志望企業名（任意）</b><small style="color: var(--ink-soft); font-weight: 400; font-size: .78rem;">入力すると質問に反映されます</small></div>
-      <input id="companyInput" type="text" placeholder="例：三菱商事、サイバーエージェント、トヨタ自動車…" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
-      <div class="match-note" id="matchNote" aria-live="polite"></div>
+      <div class="setup-row">
+        <div class="setup-key">志望業界</div>
+        <div class="chips" id="industryChips" role="group" aria-label="志望業界"></div>
+      </div>
 
-      <div class="step-label"><span class="step-num">STEP 3</span><b>面接段階を選ぶ</b></div>
-      <div class="stage-cards" id="stageCards" role="group" aria-label="面接段階"></div>
+      <div class="setup-row">
+        <div class="setup-key">志望企業<span class="setup-opt">任意</span></div>
+        <div>
+          <input id="companyInput" type="text" placeholder="例：三菱商事、サイバーエージェント、トヨタ自動車…" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off">
+          <div class="match-note" id="matchNote" aria-live="polite"></div>
+        </div>
+      </div>
 
-      <div class="start-row">
-        <button class="btn-primary" id="startBtn" disabled>面接をはじめる</button>
-        <span class="start-note" id="startNote">業界と面接段階を選んでください</span>
+      <div class="setup-row">
+        <div class="setup-key">面接段階</div>
+        <div class="stage-cards" id="stageCards" role="group" aria-label="面接段階"></div>
+      </div>
+
+      <div class="setup-row setup-row-cta">
+        <div class="setup-key"></div>
+        <div class="start-row">
+          <button class="btn-primary" id="startBtn" disabled>面接をはじめる</button>
+          <span class="start-note" id="startNote">業界と面接段階を選んでください</span>
+        </div>
       </div>
     </div>
 
-    <footer class="note">
-      デモ版について：「実出題」バッジの質問は、就活体験談（ワンキャリア・就活会議・unistyle・外資就活ドットコム等で報告された内容）をもとに2026年7月時点で編集・収録した11社分のデータです。実際の面接を保証するものではなく、最新情報のリアルタイム検索は製品版（AI検索連携）で対応予定です。深堀りと相槌はあなたの回答内容に反応するため、毎回展開が変わります。記録はこの端末のブラウザにのみ保存されます。
-    </footer>
+    <details class="note-details">
+      <summary>このデモ版について</summary>
+      <p>「実出題」バッジの質問は、就活体験談（ワンキャリア・就活会議・unistyle・外資就活ドットコム等で報告された内容）をもとに2026年7月時点で編集・収録した11社分のデータです。実際の面接を保証するものではなく、最新情報のリアルタイム検索は製品版（AI検索連携）で対応予定です。深堀りと相槌はあなたの回答内容に反応するため、毎回展開が変わります。記録はこの端末のブラウザにのみ保存されます。</p>
+    </details>
   </section>
 
   <!-- ============ 画面2: 面接 ============ -->
@@ -1411,6 +1495,7 @@
     var last = n ? hist.sessions[n - 1] : null;
     var streak = streakDays();
     $("streakNum").textContent = "連続" + streak + "日";
+    $("statsRow").style.display = n ? "" : "none";
     $("statsRow").innerHTML =
       '<div class="card stat-tile"><div class="v">' + n + '<small>回</small></div><div class="l">練習した面接</div></div>' +
       '<div class="card stat-tile"><div class="v">' + streak + '<small>日</small></div><div class="l">連続練習日数</div></div>' +
@@ -1458,11 +1543,15 @@
     startInterview();
   });
 
+  $("heroStart").addEventListener("click", function () {
+    $("setupSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
   $("shareBtn").addEventListener("click", function () {
     var btn = this;
     var done = function () {
       btn.textContent = "コピーしました ✓";
-      setTimeout(function () { btn.textContent = "共有リンクをコピー"; }, 2200);
+      setTimeout(function () { btn.textContent = "共有"; }, 2200);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(location.href).then(done, done);
