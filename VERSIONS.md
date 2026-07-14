@@ -10,7 +10,8 @@
 | 4.0 | 2026-07-13 | 企業データ大拡張: 11社→57社、業界6→11 | [versions/Vol4.0_company-data-expansion.html](versions/Vol4.0_company-data-expansion.html) |
 | 5.0 | 2026-07-13 | 合言葉パスワードゲート追加（友人限定アクセス）、画面遷移アニメーション | [versions/Vol5.0_password-gate.html](versions/Vol5.0_password-gate.html) |
 | 6.0 | 2026-07-14 | 3層質問生成システム（実出題→推定出題→業界フォールバック）実装、企業データ109社に拡張 | [versions/Vol6.0_three-tier-questions.html](versions/Vol6.0_three-tier-questions.html) |
-| **7.0** | 2026-07-14 | 面接フィードバックレポート改善: スコア説明力バグ修正／`DEEP_TYPES`拡張／メーターの参考表示／自由質問欄のtextarea化／コーチ返答分岐拡張 | [versions/Vol7.0_feedback-report-improvements.html](versions/Vol7.0_feedback-report-improvements.html) ＝現在の`index.html` |
+| 7.0 | 2026-07-14 | 面接フィードバックレポート改善: スコア説明力バグ修正／`DEEP_TYPES`拡張／メーターの参考表示／自由質問欄のtextarea化／コーチ返答分岐拡張 | [versions/Vol7.0_feedback-report-improvements.html](versions/Vol7.0_feedback-report-improvements.html) |
+| **8.0** | 2026-07-14 | 添削レポートの根拠強化: 「あなたの文章」原文引用トグル／文ごとの評価タグ／質問タイプ別の分量基準／長さと構成のトレードオフ／主体性判定の柔軟化／繰り返し語の減点＋具体表現の加点／単位つき数字の厳格検出 | [versions/Vol8.0_evidence-based-feedback.html](versions/Vol8.0_evidence-based-feedback.html) ＝現在の`index.html` |
 
 ## 運用ルール
 - 作業は**このリポジトリの`index.html`を直接編集**する(セッション固有のscratchpadに依存しない。scratchpadは会話が終わると消えるため)。
