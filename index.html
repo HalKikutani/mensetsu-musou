@@ -191,6 +191,7 @@
   .q-meta { display: flex; align-items: center; gap: 12px; font-size: .72rem; letter-spacing: .06em; color: var(--ink-3); font-weight: 600; margin-bottom: 10px; }
   .q-meta .fu-tag { color: var(--ink-2); border: none; border-radius: 0; padding: 0; font-size: .72rem; }
   .real-chip { font-size: .72rem; color: var(--blue); border: none; border-radius: 0; padding: 0; white-space: nowrap; font-weight: 600; letter-spacing: .04em; }
+  .est-chip { font-size: .72rem; color: var(--ink-3); border: none; border-radius: 0; padding: 0; white-space: nowrap; font-weight: 600; letter-spacing: .04em; }
   .q-greeting { color: var(--ink-2); font-size: .86rem; margin: 0 0 10px; }
   .q-text { font-family: var(--sans); font-size: 1.28rem; font-weight: 700; line-height: 1.7; letter-spacing: -.01em; margin: 0; animation: qfade .45s ease; }
   @keyframes qfade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
@@ -515,7 +516,7 @@
 
     <details class="note-details">
       <summary>このデモ版について</summary>
-      <p>「実出題」バッジの質問は、就活体験談（ワンキャリア・就活会議・unistyle・外資就活ドットコム等で報告された内容）をもとに2026年7月時点で編集・収録したデータです（収録企業は下記）。実際の面接を保証するものではなく、最新情報のリアルタイム検索は製品版（AI検索連携）で対応予定です。深堀りと相槌はあなたの回答内容に反応するため、毎回展開が変わります。記録はこの端末のブラウザにのみ保存されます。</p>
+      <p>「実出題」バッジの質問は、就活体験談（ワンキャリア・就活会議・unistyle・外資就活ドットコム等で報告された内容）をもとに2026年7月時点で編集・収録したデータです（収録企業は下記）。グレーの「推定」バッジの質問は、収録データと業界の出題パターンからAIが推定した質問で、実出題として報告されたものではありません。実出題データが少ない企業や未収録の企業でも、この推定出題で練習できます。実際の面接を保証するものではなく、最新情報のリアルタイム検索は製品版（AI検索連携）で対応予定です。深堀りと相槌はあなたの回答内容に反応するため、毎回展開が変わります。記録はこの端末のブラウザにのみ保存されます。</p>
       <p class="company-list" id="companyList"></p>
     </details>
   </section>
@@ -539,7 +540,7 @@
     </div>
 
     <div class="card q-card">
-      <div class="q-meta"><span id="qMetaNum"></span><span class="fu-tag" id="fuTag" style="display:none;">深堀り</span><span class="real-chip" id="realTag" style="display:none;" title="就活体験談で実際に報告された質問（2026年7月時点の収録）">実出題</span></div>
+      <div class="q-meta"><span id="qMetaNum"></span><span class="fu-tag" id="fuTag" style="display:none;">深堀り</span><span class="real-chip" id="realTag" style="display:none;" title="就活体験談で実際に報告された質問（2026年7月時点の収録）">実出題</span><span class="est-chip" id="estTag" style="display:none;" title="収録データと業界の出題パターンからAIが推定した質問（実出題の報告はありません）">推定</span></div>
       <p class="q-greeting" id="qGreeting"></p>
       <p class="q-text" id="qText"></p>
       <div class="answer-block">
@@ -659,12 +660,12 @@
     { id: "kinyu",  label: "金融" },
     { id: "consul", label: "コンサル" },
     { id: "maker",  label: "メーカー" },
-    { id: "koukoku",label: "広告・マスコミ" },
+    { id: "koukoku",label: "マスコミ・広告・出版" },
     { id: "food",   label: "食品・消費財" },
     { id: "infra",  label: "インフラ・交通" },
     { id: "estate", label: "不動産・建設" },
     { id: "ent",    label: "エンタメ・ゲーム" },
-    { id: "hr",     label: "人材・サービス" }
+    { id: "hr",     label: "小売・人材・サービス" }
   ];
 
   var STAGES = [
@@ -1228,7 +1229,7 @@
       first: [{ t: "deep", real: 1, q: "あなたにとって“遊び”とは何ですか？", fu: "その“遊び”を、任天堂はどう広げるべきだと思いますか？" }],
       middle: [{ t: "industry", real: 1, q: "任天堂の製品やサービスをひとつ挙げて、改善案を提案してください。", fu: "その改善は“任天堂らしい”ですか？　なぜ？" }],
       final: [{ t: "deep", real: 1, q: "あなたの“独創性”が最も発揮された経験を教えてください。", fu: "それは誰かの真似ではないと、なぜ言い切れますか？" }] } },
-    bandainamco: { label: "バンダイナムコ", industry: "ent", alias: ["バンダイナムコ", "バンナム", "bandainamco", "バンダイ"], qs: {
+    bandainamco: { label: "バンダイナムコ", industry: "ent", alias: ["バンダイナムコ", "バンナム", "bandainamco"], qs: {
       first: [{ t: "industry", real: 1, q: "好きなIP（作品）をひとつ挙げて、その魅力を語ってください。", fu: "そのIPの“まだ気づかれていない価値”は何だと思いますか？" }],
       middle: [{ t: "industry", real: 1, q: "そのIPを、まだ届いていない層に届ける企画を考えてください。", fu: "ファンが離れるリスクはありませんか？" }],
       final: [{ t: "vision", real: 0, q: "“遊びと感動”を、10年後のあなたはどう届けていますか？", fu: "その未来に、いま何が足りませんか？" }] } },
@@ -1264,6 +1265,348 @@
       first: [{ t: "deep", real: 1, q: "“全員経営者”という考え方をどう受け止めますか？　あなたが経営者視点で動いた経験は？", fu: "経営者と従業員の一番の違いは何だと思いますか？" }],
       middle: [{ t: "industry", real: 1, q: "ユニクロの店舗で感じた課題と、改善案を教えてください。", fu: "その改善を店長に提案したら、何と言われると思いますか？" }],
       final: [{ t: "kakugo", real: 1, q: "入社後はまず店舗、そして店長を目指すキャリアです。世界一を目指すこの会社で、あなたは何を成し遂げますか？", fu: "“世界一”という言葉に、現実味を持てていますか？" }] } }
+    ,
+    /* ---- 2026-07 追加52社（2027卒人気ランキングTop100より） ---- */
+    toho: { label: "東宝", industry: "ent", alias: ["東宝", "toho"],
+      traits: { rivals: ["東映", "松竹"], products: ["ゴジラ", "TOHOシネマズ"], value: "映画で世界を面白くする" }, qs: {
+      first: [{ t: "motivation", real: 1, q: "エンタメ業界の中でも、なぜ東宝なのですか？", fu: "配給・興行・不動産まである東宝の中で、どの事業に一番惹かれていますか？" }],
+      middle: [{ t: "industry", real: 1, q: "あなたが東宝で企画したい映画は、誰に向けたもので、何が面白いのですか？", fu: "その企画の結末（オチ）はどうなるのですか？　観客にどう受け止められると想定していますか？" }],
+      final: [] } },
+    shueisha: { label: "集英社", industry: "koukoku", alias: ["集英社", "shueisha"],
+      traits: { rivals: ["講談社", "小学館"], products: ["週刊少年ジャンプ"], value: "新しい面白さの発見" }, qs: {} },
+    kadokawa: { label: "KADOKAWA", industry: "koukoku", alias: ["KADOKAWA", "カドカワ", "角川"],
+      traits: { rivals: ["集英社", "講談社"], products: ["電撃文庫", "ニコニコ動画"] }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "学生時代に、学業以外で力を入れたことは何ですか？", fu: "その経験は、KADOKAWAの仕事にどう活かせると思いますか？" },
+        { t: "deep", real: 1, q: "映画とアニメの他に、好きなエンタメのジャンルはありますか？", fu: "そのジャンルの“面白さの正体”を、自分の言葉で説明してみてください。" }],
+      middle: [
+        { t: "motivation", real: 1, q: "なぜ他社ではなく、KADOKAWAなのですか？", fu: "あなたはどのような形でKADOKAWAに貢献できると考えていますか？" },
+        { t: "vision", real: 1, q: "KADOKAWAで立ち上げたい新企画・新事業はありますか？　この場でプレゼンしてください。", fu: "その企画の最初の読者・ユーザーは誰ですか？" }],
+      final: [{ t: "vision", real: 1, q: "KADOKAWAとあなた自身には、今後どんな“進化”が必要だと考えますか？", fu: "その進化のために、あなた自身は何をしますか？" }] } },
+    sky: { label: "Sky", industry: "it", alias: ["Sky", "スカイ"],
+      traits: { rivals: ["富士ソフト", "NTTデータ"], products: ["SKYSEA Client View"], value: "好働力" }, qs: {
+      first: [{ t: "motivation", real: 1, q: "なぜIT業界で、その中でもなぜSkyなのですか？", fu: "他のIT企業ではなく、Skyである決め手は何ですか？" }],
+      middle: [{ t: "vision", real: 1, q: "Skyのどこを魅力に感じていますか？　入社後にやりたいことと合わせて聞かせてください。", fu: "そのやりたいことに、いまのあなたに足りないスキルは何ですか？" }],
+      final: [] } },
+    irisohyama: { label: "アイリスオーヤマ", industry: "food", alias: ["アイリスオーヤマ", "アイリス", "iris"],
+      traits: { rivals: ["ニトリ", "山善"], products: ["サーキュレーター", "電気圧力鍋"], value: "ユーザーイン" }, qs: {
+      first: [{ t: "industry", real: 1, q: "最近のアイリスオーヤマに関するニュースや話題で、印象に残っているものはありますか？", fu: "そのニュースを見て、当社にどんな印象を持ちましたか？" }],
+      middle: [{ t: "kakugo", real: 1, q: "希望する職種につけない可能性もありますが、大丈夫ですか？", fu: "希望と違う職種になった場合、最初の1年で何をしますか？" }],
+      final: [
+        { t: "industry", real: 1, q: "あなたが実際に使っているアイリスの製品は何ですか？", fu: "その製品に、ユーザーとして注文をつけるとしたら？" },
+        { t: "motivation", real: 1, q: "アイリスオーヤマの企業理念で、共感できる点はどこですか？", fu: "その共感を、あなた自身の経験で裏付けてください。" }] } },
+    bandai: { label: "バンダイ", industry: "ent", alias: ["バンダイ", "bandai"],
+      traits: { rivals: ["タカラトミー", "サンリオ"], products: ["ガンプラ", "たまごっち"], metaphor: "キャラクター" }, qs: {
+      first: [],
+      middle: [],
+      final: [
+        { t: "deep", real: 1, q: "あなた自身をキャラクターに例えると、何ですか？", fu: "なぜそのキャラクターなのですか？　バンダイのどの部分と重なりますか？" },
+        { t: "vision", real: 1, q: "10年後のバンダイは、どのような会社になっていると思いますか？", fu: "その未来に、あなたはどう関わっていたいですか？" }] } },
+    hoshinoresort: { label: "星野リゾート", industry: "hr", alias: ["星野リゾート", "星野", "hoshino"],
+      traits: { rivals: ["帝国ホテル", "リッツ・カールトン"], products: ["星のや", "界"], value: "ホスピタリティ・イノベーター" }, qs: {
+      first: [{ t: "motivation", real: 1, q: "志望コースを選んだ理由と、星野リゾートでやりたいことを教えてください。", fu: "そのやりたいことは、他のホテル・旅行会社では実現できませんか？" }],
+      middle: [{ t: "deep", real: 1, q: "あなたにとって“マネジメント”とは何ですか？　このコースで何に挑戦し、どう成長したいですか？", fu: "その成長は、具体的にどんな行動で実現しますか？" }],
+      final: [{ t: "kakugo", real: 1, q: "星野リゾートで働く意思は、いまどのくらい固まっていますか？　入社してからやりたいことと合わせて聞かせてください。", fu: "配属先が希望の施設と違っても、その意思は変わりませんか？" }] } },
+    lotte: { label: "ロッテ", industry: "food", alias: ["ロッテ", "lotte"],
+      traits: { rivals: ["明治", "森永製菓"], products: ["キシリトールガム", "コアラのマーチ"] }, qs: {
+      first: [{ t: "strength", real: 1, q: "周りからは、どんな性格だと言われることが多いですか？", fu: "その性格は、仕事のどんな場面で活きると思いますか？" }],
+      middle: [{ t: "industry", real: 0, q: "ロッテの商品で好きなものは何ですか？　理由も聞かせてください。", fu: "その商品を、もっと売るためのアイデアはありますか？" }],
+      final: [{ t: "kakugo", real: 0, q: "なぜロッテなのですか？　いまの選考状況と、入社後のキャリアプランも聞かせてください。", fu: "他の菓子メーカーから内定が出たら、どうしますか？" }] } },
+    shiseido: { label: "資生堂", industry: "food", alias: ["資生堂", "shiseido"],
+      traits: { rivals: ["コーセー", "花王"], products: ["マキアージュ", "アネッサ"], value: "美の力でよりよい世界を" }, qs: {
+      first: [{ t: "deep", real: 1, q: "スキンケアやメイク、美容について、あなた自身がこだわっていることはありますか？", fu: "そのこだわりは、いつ、何がきっかけで生まれたのですか？" }],
+      middle: [{ t: "vision", real: 1, q: "資生堂に入社して、何がしたいですか？", fu: "その仕事を通じて、生活者にどんな価値を届けたいですか？" }],
+      final: [] } },
+    shogakukan: { label: "小学館", industry: "koukoku", alias: ["小学館", "shogakukan"],
+      traits: { rivals: ["集英社", "講談社"], products: ["コロコロコミック", "週刊ポスト"] }, qs: {
+      first: [{ t: "motivation", real: 1, q: "志望動機と、小学館でやりたいことを教えてください。", fu: "そのやりたいことは、どの雑誌・部署で実現するイメージですか？" }],
+      middle: [
+        { t: "industry", real: 1, q: "いま、あなたの志望する雑誌で“新しい人”をアサインするなら、誰を起用しますか？", fu: "そのアサインで、雑誌にどんな変化を期待しますか？" },
+        { t: "deep", real: 1, q: "編集者に一番大切なことは、何だと思いますか？", fu: "あなた自身は、それを持っていますか？　根拠になる経験は？" }],
+      final: [{ t: "kakugo", real: 1, q: "志望部署以外には、興味はないのですか？", fu: "まったく畑違いの部署に配属されたら、どう向き合いますか？" }] } },
+    konami: { label: "コナミグループ", industry: "ent", alias: ["コナミ", "KONAMI", "konami"],
+      traits: { rivals: ["セガ", "カプコン"], products: ["eFootball", "桃太郎電鉄"] }, qs: {
+      first: [{ t: "deep", real: 1, q: "普段、ゲームはやりますか？　どんなタイトルをどのくらいやっているか教えてください。", fu: "そのゲームの“面白さの核”は何だと思いますか？" }],
+      middle: [
+        { t: "motivation", real: 1, q: "IT企業やメーカーなど他の道もあるなかで、なぜコナミなのですか？", fu: "コナミのどのタイトル・サービスで、あなたの経験を活かせますか？" },
+        { t: "industry", real: 1, q: "同業他社と比較して、コナミの強みは何だと思いますか？", fu: "その強みは、5年後も強みであり続けると思いますか？" }],
+      final: [] } },
+    jal: { label: "JAL", industry: "infra", alias: ["JAL", "日本航空", "jal"],
+      traits: { rivals: ["ANA"], value: "おもてなしの心" }, qs: {
+      first: [{ t: "deep", real: 0, q: "あなたにとって「おもてなし」とは何ですか？", fu: "あなたが実際に“おもてなし”を実践した場面を、ひとつ聞かせてください。" }],
+      middle: [],
+      final: [{ t: "intro", real: 1, q: "緊張していますか？　……では、自己紹介を1分でお願いします。", fu: "いま話してくれた経験の中で、一番苦労したことは何ですか？" }] } },
+    tbs: { label: "TBSテレビ", industry: "koukoku", alias: ["TBS", "TBSテレビ", "TBSホールディングス"],
+      traits: { rivals: ["フジテレビ", "日本テレビ"], products: ["日曜劇場", "報道特集"] }, qs: {
+      first: [{ t: "industry", real: 1, q: "好きなTBSの番組と、その理由を教えてください。", fu: "その番組を、もっと多くの人に見てもらうには何が必要だと思いますか？" }],
+      middle: [
+        { t: "industry", real: 1, q: "では逆に、嫌いなドラマとその理由を聞かせてください。", fu: "その作品の作り手は、何を狙って、何を外したのだと思いますか？" },
+        { t: "industry", real: 1, q: "若者のテレビ離れについて、どう思いますか？", fu: "その課題に対して、TBSはどう向き合うべきだと思いますか？" }],
+      final: [{ t: "vision", real: 1, q: "あなたが作りたい番組を、一言で表現してください。", fu: "その番組は、誰の、どんな時間を変えるものですか？" }] } },
+    sega: { label: "セガ", industry: "ent", alias: ["セガ", "SEGA", "セガサミー"],
+      traits: { rivals: ["カプコン", "コナミ"], products: ["ソニック", "龍が如く"] }, qs: {
+      first: [
+        { t: "industry", real: 1, q: "ゲームプランナーに必要な能力は、何だと思いますか？", fu: "その能力を、あなたはこれまでどんな経験で培ってきましたか？" },
+        { t: "gakuchika", real: 1, q: "学生時代に力を入れたことは何ですか？", fu: "その中で最も苦労した場面と、乗り越え方を聞かせてください。" }],
+      middle: [{ t: "industry", real: 1, q: "ゲームにおいて、音響やグラフィックは重要だと思いますか？", fu: "印象に残っている音響・グラフィック表現の例を挙げてください。" }],
+      final: [{ t: "kakugo", real: 1, q: "あなたのしたいことは、セガ以外でもできるのではありませんか？", fu: "セガでなければならない理由を、具体的な事業やタイトルを挙げて聞かせてください。" }] } },
+    toppan: { label: "TOPPAN", industry: "maker", alias: ["TOPPAN", "凸版印刷", "凸版", "toppan"],
+      traits: { rivals: ["大日本印刷"], products: ["セキュア関連事業", "パッケージ"] }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "学生時代に、何かチームで取り組んだ経験はありますか？", fu: "チームの中であなたはどんな役割で、意見の対立にはどう対応しましたか？" },
+        { t: "strength", real: 1, q: "あなたの弱みは何ですか？", fu: "その弱みを克服するために、実際に取り組んでいることはありますか？" }],
+      middle: [],
+      final: [{ t: "vision", real: 1, q: "TOPPANに入社して、実現したいことは何ですか？", fu: "それには、TOPPANのどの事業・部門が関わってくると考えていますか？" }] } },
+    kikkoman: { label: "キッコーマン", industry: "food", alias: ["キッコーマン", "kikkoman"],
+      traits: { rivals: ["味の素", "ヤマサ醤油"], products: ["しょうゆ", "デルモンテ"] }, qs: {
+      first: [{ t: "vision", real: 1, q: "当社は海外売上の比率が高い会社です。海外勤務については、どんなイメージを持っていますか？", fu: "海外勤務で想定される困難と、それにどう対応するかを聞かせてください。" }],
+      middle: [{ t: "deep", real: 1, q: "学業や研究で、思うようにいかなかったとき、あなたはどうしますか？", fu: "実際にうまくいかなかった経験と、その後の対応を具体的に聞かせてください。" }],
+      final: [{ t: "vision", real: 1, q: "入社後に挑戦したいことは何ですか？", fu: "それを実現するために、入社後まず何から取り組みますか？" }] } },
+    toei: { label: "東映", industry: "ent", alias: ["東映", "toei"],
+      traits: { rivals: ["東宝", "松竹"], products: ["仮面ライダー", "プリキュア"] }, qs: {
+      first: [
+        { t: "intro", real: 1, q: "1分間で、あなたを自由にアピールしてください。", fu: "いまのアピール内容は、東映のどの事業で活かせると思いますか？" },
+        { t: "gakuchika", real: 1, q: "学生時代にあなたが“チャレンジ”した経験を教えてください。", fu: "そのチャレンジの中で、想定外の出来事にどう対応しましたか？" }],
+      middle: [{ t: "motivation", real: 1, q: "なぜ、他の映画会社ではなく東映なのですか？", fu: "東映の作品・事業の中で、特に共感した具体例を挙げてください。" }],
+      final: [{ t: "deep", real: 1, q: "これまでの経験で、最も困難だったプロジェクトや状況について聞かせてください。", fu: "その経験から得た教訓を、入社後どう活かしますか？" }] } },
+    morinaga: { label: "森永製菓", industry: "food", alias: ["森永製菓", "森永", "morinaga"],
+      traits: { rivals: ["明治", "ロッテ"], products: ["ハイチュウ", "チョコモナカジャンボ"] }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "学生時代に頑張ったことは何ですか？", fu: "その活動における、あなた自身の一番の工夫は何でしたか？" },
+        { t: "motivation", real: 1, q: "どんな業界を受けていますか？　その中で森永製菓を受けている理由も聞かせてください。", fu: "他の食品メーカーではなく、森永製菓を選ぶ決め手は何ですか？" }],
+      middle: [],
+      final: [
+        { t: "strength", real: 1, q: "普段、周りからはどのような人だと言われますか？", fu: "その評価と、あなた自身の自己認識にズレはありますか？" },
+        { t: "vision", real: 1, q: "入社して5年後、10年後、あなたの力をどう活かしていきたいですか？", fu: "では、最初の1〜2年で何をすべきだと考えますか？" }] } },
+    shochiku: { label: "松竹", industry: "ent", alias: ["松竹", "shochiku"],
+      traits: { rivals: ["東宝", "東映"], products: ["歌舞伎", "男はつらいよ"] }, qs: {
+      first: [
+        { t: "strength", real: 1, q: "松竹で発揮できる力・活かせる経験を、ご自身の言葉で説明してください。", fu: "その力を発揮したとき、周囲からはどんな反応がありましたか？" },
+        { t: "industry", real: 1, q: "最近見た映画は何ですか？", fu: "その作品の、どこが優れていると思いましたか？" }],
+      middle: [{ t: "industry", real: 1, q: "新規事業をマネタイズする上で、大事なことは何だと思いますか？", fu: "具体的な事業アイデアをひとつ挙げて、収益化の方法まで聞かせてください。" }],
+      final: [{ t: "industry", real: 1, q: "演劇とインターネットの相性について、どう思いますか？", fu: "その考えを踏まえて、松竹が今後取り組むべき施策は何ですか？" }] } },
+    meiji: { label: "明治", industry: "food", alias: ["明治", "明治グループ", "meiji"],
+      traits: { rivals: ["森永製菓", "ロッテ"], products: ["明治ブルガリアヨーグルト", "きのこの山"] }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代に力を入れたことを教えてください。", fu: "もう一度同じ状況になったら、どこを改善しますか？" }],
+      middle: [{ t: "motivation", real: 1, q: "あなたの就活の軸は何ですか？", fu: "その軸に照らして、他社ではなく明治を選ぶ決定的な理由は何ですか？" }],
+      final: [{ t: "vision", real: 1, q: "明治で実現したいことを、1〜2分で聞かせてください。", fu: "入社後、どの部署でどんな経験を積んで、そこへ向かいますか？" }] } },
+    takaratomy: { label: "タカラトミー", industry: "ent", alias: ["タカラトミー", "takaratomy"],
+      traits: { rivals: ["バンダイ", "レゴ"], products: ["トミカ", "プラレール", "リカちゃん"] }, qs: {
+      first: [
+        { t: "deep", real: 1, q: "思い出に残っているおもちゃ、アソビは何ですか？", fu: "そのおもちゃのどんな要素が“良いアソビ”だったと思いますか？" },
+        { t: "vision", real: 1, q: "あなたが企画したい商品やプロモーションは、何かありますか？", fu: "それは、同業他社の既存商品とどう差別化されますか？" }],
+      middle: [{ t: "strength", real: 1, q: "あなたの苦手なタイプの人は、どんな人ですか？", fu: "そのタイプの人とチームで協働するとき、どう工夫しますか？" }],
+      final: [{ t: "deep", real: 1, q: "子どものころ、はまっていたおもちゃは何ですか？", fu: "その体験が、あなたが玩具業界を志望する原点になっていますか？" }] } },
+    kagome: { label: "カゴメ", industry: "food", alias: ["カゴメ", "kagome"],
+      traits: { rivals: ["伊藤園", "デルモンテ"], products: ["野菜生活100", "トマトケチャップ"] }, qs: {
+      first: [
+        { t: "motivation", real: 1, q: "食品メーカーの中でも、なぜカゴメなのですか？", fu: "カゴメの商品・事業のうち、特に共感した取り組みはありますか？" },
+        { t: "gakuchika", real: 1, q: "チームで取り組んだ経験について、メンバー構成とあなたの役割を教えてください。", fu: "意見が割れたとき、どうやって合意形成をしましたか？" }],
+      middle: [{ t: "industry", real: 1, q: "好きなカゴメの商品は何ですか？　それを使った得意料理があれば、それも聞かせてください。", fu: "その商品の魅力を、まだ知らない人にどう伝えますか？" }],
+      final: [] } },
+    fujisoft: { label: "富士ソフト", industry: "it", alias: ["富士ソフト", "fujisoft"],
+      traits: { rivals: ["Sky", "NTTデータ"], products: ["PALRO"] }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "学生時代に力を入れたことと、そのとき意識していたことを教えてください。", fu: "意識していたことは、結果にどうつながりましたか？" },
+        { t: "vision", real: 1, q: "富士ソフトに入社して、やりたいことは何ですか？", fu: "実現のために、どんなスキルを身につける必要がありますか？" }],
+      middle: [],
+      final: [
+        { t: "motivation", real: 1, q: "なぜIT業界を志望しているのですか？", fu: "数あるSIerの中で、富士ソフトを選ぶ決め手は何ですか？" },
+        { t: "deep", real: 1, q: "チームで意見が対立したとき、あなたはどう行動しますか？", fu: "実際にそうした対立を経験したことがあれば、聞かせてください。" }] } },
+    avex: { label: "エイベックス", industry: "ent", alias: ["エイベックス", "avex"],
+      traits: { rivals: ["ソニー・ミュージック", "ユニバーサルミュージック"], value: "エンタテインメントの革新" }, qs: {
+      first: [
+        { t: "intro", real: 1, q: "10秒で、自由にあなたを表現してください。", fu: "その表現方法を選んだ理由は何ですか？" },
+        { t: "motivation", real: 1, q: "他のレーベルと比較して、なぜエイベックスなのですか？", fu: "エイベックスの作品・アーティストで、特に魅力を感じたものは？" }],
+      middle: [{ t: "strength", real: 1, q: "あなたの長所と短所を教えてください。", fu: "その短所が原因で失敗した経験と、改善策を聞かせてください。" }],
+      final: [{ t: "industry", real: 1, q: "音楽業界の課題は、何だと思いますか？", fu: "その課題に対して、エイベックスとして取れる打ち手は？" }] } },
+    asics: { label: "アシックス", industry: "maker", alias: ["アシックス", "asics"],
+      traits: { rivals: ["ミズノ", "ナイキ"], products: ["GELシリーズ", "オニツカタイガー"], value: "健全な身体に健全な精神があれかし" }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代に頑張ったことを教えてください。", fu: "その経験で得た力を、アシックスでどう発揮できますか？" }],
+      middle: [
+        { t: "industry", real: 1, q: "アシックスの課題と、それを改善するにはどうすべきか、あなたの考えを聞かせてください。", fu: "その改善策を実行する上で、想定される障壁は何ですか？" },
+        { t: "motivation", real: 1, q: "なぜスポーツメーカーなのですか？", fu: "数あるスポーツメーカーの中で、なぜアシックスなのですか？" }],
+      final: [{ t: "vision", real: 1, q: "当社に入って、どんな仕事がしたいですか？", fu: "その仕事を通じて、アシックスにどう貢献したいですか？" }] } },
+    docomo: { label: "NTTドコモ", industry: "it", alias: ["NTTドコモ", "ドコモ", "docomo"],
+      traits: { rivals: ["KDDI", "ソフトバンク"], products: ["dポイント", "ahamo"] }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代に最も力を入れたことは何ですか？", fu: "そのモチベーションの源泉は、何だったのですか？" }],
+      middle: [{ t: "gakuchika", real: 1, q: "チームや組織でのリーダー経験はありますか？", fu: "リーダーとして最も苦労した場面と、その乗り越え方を聞かせてください。" }],
+      final: [{ t: "vision", real: 1, q: "あなたのやりたいことを実現しようとしたとき、どんな工夫が必要だと思いますか？", fu: "それは、ドコモのどのアセットを活用すれば実現できますか？" }] } },
+    kirin: { label: "キリンホールディングス", industry: "food", alias: ["キリン", "キリンホールディングス", "キリンビール", "kirin"],
+      traits: { rivals: ["アサヒビール", "サントリー"], products: ["一番搾り", "午後の紅茶"] }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "学生時代に力を入れたことを教えてください。", fu: "その中で一番大変だったことは何ですか？" },
+        { t: "deep", real: 1, q: "なぜ、それをやろうと思ったのですか？", fu: "他の選択肢はなかったのですか？" }],
+      middle: [{ t: "strength", real: 1, q: "あなたの強みと弱みを教えてください。", fu: "弱みを克服するために、いま何をしていますか？" }],
+      final: [{ t: "motivation", real: 1, q: "なぜキリンを志望するのですか？", fu: "他の飲料メーカーではなく、なぜキリンなのですか？" }] } },
+    aeon: { label: "イオン", industry: "hr", alias: ["イオン", "イオングループ", "aeon"],
+      traits: { rivals: ["セブン＆アイ"], products: ["トップバリュ"], value: "お客さま第一" }, qs: {
+      first: [{ t: "deep", real: 1, q: "これまでの人生で、心を動かされた瞬間はありますか？", fu: "なぜそのとき、心が動いたのだと思いますか？" }],
+      middle: [
+        { t: "industry", real: 1, q: "実際に店舗を見て感じた、良い点と改善点を聞かせてください。", fu: "その改善点を実現するには、何が必要だと思いますか？" },
+        { t: "vision", real: 1, q: "店舗勤務では、どこに配属されたいですか？　理由も聞かせてください。", fu: "希望と違う部門になったら、どうしますか？" }],
+      final: [{ t: "motivation", real: 1, q: "同業他社と比較して、なぜイオンなのですか？", fu: "他社の選考状況も、率直に教えてください。" }] } },
+    kewpie: { label: "キユーピー", industry: "food", alias: ["キユーピー", "キューピー", "kewpie"],
+      traits: { rivals: ["味の素", "カゴメ"], products: ["マヨネーズ", "深煎りごまドレッシング"] }, qs: {
+      first: [{ t: "deep", real: 1, q: "“食”に対するこだわりを教えてください。", fu: "そのこだわりは、キユーピーのどの事業と結びつきますか？" }],
+      middle: [],
+      final: [
+        { t: "deep", real: 1, q: "人に何かをお願いするとき、気をつけていることはありますか？", fu: "それでもうまくいかなかった経験はありますか？" },
+        { t: "deep", real: 1, q: "社外との交渉がうまくいかないとき、あなたならどう対応しますか？", fu: "崩れかけた相手の信頼を、どう回復しますか？" }] } },
+    familymart: { label: "ファミリーマート", industry: "hr", alias: ["ファミリーマート", "ファミマ", "familymart"],
+      traits: { rivals: ["セブン-イレブン", "ローソン"], products: ["ファミチキ"], value: "あなたと、コンビに" }, qs: {
+      first: [{ t: "motivation", real: 1, q: "なぜコンビニ業界で、その中でもなぜファミリーマートなのですか？", fu: "入社したら、どんな業務に興味がありますか？" }],
+      middle: [
+        { t: "industry", real: 1, q: "スーパーバイザー（SV）という仕事を、どう理解していますか？", fu: "SVとして困難に直面したら、どう対応すると思いますか？" },
+        { t: "strength", real: 1, q: "周りからは、どのような人だと言われますか？", fu: "その評価と自己認識に、ギャップはありますか？" }],
+      final: [
+        { t: "deep", real: 1, q: "前回までの面接で、どんなフィードバックを受けましたか？", fu: "それを受けて、今日までに何を改善しましたか？" },
+        { t: "vision", real: 1, q: "入社後に成し遂げたい夢やビジョンはありますか？", fu: "最初の3年で、何をしますか？" }] } },
+    resona: { label: "りそなグループ", industry: "kinyu", alias: ["りそな", "りそな銀行", "りそなホールディングス", "resona"],
+      traits: { rivals: ["みずほ銀行", "三井住友銀行"], value: "リテールNo.1" }, qs: {
+      first: [{ t: "strength", real: 1, q: "あなたの強みは何ですか？　それは当社でどう活きますか？", fu: "その強みを裏付けるエピソードを聞かせてください。" }],
+      middle: [
+        { t: "motivation", real: 1, q: "なぜメガバンクではなく、りそななのですか？", fu: "他にどの業界・企業を見ていますか？" },
+        { t: "motivation", real: 1, q: "そもそも、なぜ金融業界を目指すのですか？", fu: "金融の中でも、なぜ銀行なのですか？" }],
+      final: [
+        { t: "kakugo", real: 1, q: "りそなでなければならない理由を聞かせてください。", fu: "他行ではなく当社を選ぶ、最後の決め手は何ですか？" },
+        { t: "deep", real: 1, q: "粘り強く何かに取り組んできた経験はありますか？", fu: "そのモチベーションを、どう維持したのですか？" }] } },
+    amazon: { label: "アマゾンジャパン", industry: "it", alias: ["アマゾン", "amazon", "アマゾンジャパン"],
+      traits: { rivals: ["グーグル", "楽天"], products: ["Amazonプライム", "AWS"], value: "Customer Obsession（お客様起点）" }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "当社はリーダーシップ・プリンシプルを重視しています。あなたが“自分の役割を超えて”行動した経験を教えてください。", fu: "なぜ、役割を超えてまで行動したのですか？　他にどんな選択肢がありましたか？" }],
+      middle: [{ t: "gakuchika", real: 1, q: "他者と協働して、何かを成し遂げた経験を聞かせてください。", fu: "意見の対立は、どう解決しましたか？" }],
+      final: [
+        { t: "deep", real: 1, q: "人生で大きな選択・判断を迫られた経験はありますか？", fu: "いま振り返って、その判断は正しかったと思いますか？" },
+        { t: "motivation", real: 1, q: "なぜAmazonを志望するのですか？", fu: "他のテック企業ではなく、Amazonである理由は？" }] } },
+    sekisuihouse: { label: "積水ハウス", industry: "estate", alias: ["積水ハウス", "積水", "sekisui"],
+      traits: { rivals: ["大和ハウス工業", "住友林業"], products: ["シャーメゾン"], value: "わが家を世界一幸せな場所にする" }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "高い目標を持って取り組んだ経験を教えてください。", fu: "最も苦労した点は、どこでしたか？" },
+        { t: "deep", real: 1, q: "挫折した経験、失敗した経験はありますか？", fu: "その経験を、その後どう活かしましたか？" }],
+      middle: [
+        { t: "motivation", real: 1, q: "なぜハウスメーカーで、その中でもなぜ積水ハウスなのですか？", fu: "他社と比較したときの、最後の決め手は何ですか？" },
+        { t: "kakugo", real: 1, q: "勤務地の希望はありますか？", fu: "希望と異なる勤務地になった場合は、どうしますか？" }],
+      final: [{ t: "vision", real: 1, q: "入社後のキャリアビジョンを聞かせてください。", fu: "そのために、いま何を準備していますか？" }] } },
+    morinagamilk: { label: "森永乳業", industry: "food", alias: ["森永乳業"],
+      traits: { rivals: ["明治", "雪印メグミルク"], products: ["ピノ", "マウントレーニア"] }, qs: {
+      first: [{ t: "motivation", real: 1, q: "なぜ食品業界で、その中でもなぜ森永乳業なのですか？", fu: "“乳業”を選ぶ理由は何ですか？" }],
+      middle: [{ t: "deep", real: 1, q: "これまでどのような困難に直面し、どう乗り越えてきましたか？", fu: "もう一度同じ困難に直面したら、どうしますか？" }],
+      final: [{ t: "kakugo", real: 1, q: "工場勤務では夜勤や転勤もあります。対応できますか？", fu: "生活面では、どう対応するつもりですか？" }] } },
+    megmilk: { label: "雪印メグミルク", industry: "food", alias: ["雪印メグミルク", "雪印", "メグミルク"],
+      traits: { rivals: ["森永乳業", "明治"], products: ["雪印コーヒー", "6Pチーズ"] }, qs: {
+      first: [{ t: "motivation", real: 1, q: "なぜ当社なのですか？　他社との違いも含めて聞かせてください。", fu: "乳業他社と比べて、何が決め手ですか？" }],
+      middle: [
+        { t: "deep", real: 1, q: "あなたにとって、“働く”とは何ですか？", fu: "それは、当社のどんな仕事で実現できますか？" },
+        { t: "vision", real: 1, q: "雪印メグミルクで実現したいことは何ですか？", fu: "実現には、何が必要だと思いますか？" }],
+      final: [{ t: "kakugo", real: 1, q: "北海道勤務になる可能性がありますが、大丈夫ですか？", fu: "転勤そのものについては、どう考えていますか？" }] } },
+    kose: { label: "コーセー", industry: "food", alias: ["コーセー", "kose", "KOSE"],
+      traits: { rivals: ["資生堂", "ポーラ"], products: ["雪肌精", "コスメデコルテ"], metaphor: "化粧品成分" }, qs: {
+      first: [{ t: "deep", real: 1, q: "あなたを化粧品成分に例えると、何ですか？", fu: "なぜ、その成分なのですか？" }],
+      middle: [{ t: "gakuchika", real: 1, q: "チームで問題を解決した経験に、点数をつけるなら何点ですか？", fu: "満点にならなかった理由は、何ですか？" }],
+      final: [
+        { t: "motivation", real: 1, q: "競合他社とコーセーの違いは、何だと思いますか？", fu: "その違いを踏まえて、コーセーに何を期待しますか？" },
+        { t: "vision", real: 1, q: "5年後のキャリアビジョンを聞かせてください。", fu: "当社で、どう成長していきたいですか？" }] } },
+    itoen: { label: "伊藤園", industry: "food", alias: ["伊藤園", "itoen"],
+      traits: { rivals: ["キリン", "サントリー"], products: ["お〜いお茶", "健康ミネラルむぎ茶"] }, qs: {
+      first: [{ t: "industry", real: 1, q: "伊藤園の商品で、気に入っているものはありますか？", fu: "他社の類似商品との違いは、何だと思いますか？" }],
+      middle: [{ t: "industry", real: 1, q: "当社の営業の中心はルートセールスです。この仕事を、どう理解していますか？", fu: "ルートセールスの困難な場面に、どう対応すると思いますか？" }],
+      final: [
+        { t: "industry", real: 1, q: "伊藤園の課題と、その改善策を聞かせてください。", fu: "実行する上での障壁は、何だと思いますか？" },
+        { t: "kakugo", real: 1, q: "率直に聞きます。内定を出したら、本当に伊藤園に入社しますか？", fu: "他社から内定が出たら、どちらを選びますか？" }] } },
+    calbee: { label: "カルビー", industry: "food", alias: ["カルビー", "calbee"],
+      traits: { rivals: ["湖池屋", "森永製菓"], products: ["ポテトチップス", "じゃがりこ", "フルグラ"] }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代に力を入れたことと、苦労した点を教えてください。", fu: "そもそも、なぜその活動を始めたのですか？" }],
+      middle: [{ t: "strength", real: 1, q: "どんな人だと言われることが多いですか？", fu: "その評価と自己認識に、ギャップはありますか？" }],
+      final: [{ t: "deep", real: 1, q: "これまでに、人から本気で怒られた経験はありますか？", fu: "そのあと、何をどう改善しましたか？" }] } },
+    mitsubishielectric: { label: "三菱電機", industry: "maker", alias: ["三菱電機", "mitsubishielectric"],
+      traits: { rivals: ["日立製作所", "パナソニック"], products: ["霧ヶ峰"] }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "エントリーシートの“自分史”から伺います。人生で最も打ち込んだ経験を、それを選んだ理由と合わせて教えてください。", fu: "その経験を選んだのは、なぜですか？" }],
+      middle: [{ t: "deep", real: 1, q: "意見が対立したとき、あなたはどう対応してきましたか？", fu: "対立を解消できなかった場合は、どうしますか？" }],
+      final: [{ t: "motivation", real: 1, q: "改めて、志望動機を教えてください。", fu: "当社の中でも、なぜこの部門・職種なのですか？" }] } },
+    mhi: { label: "三菱重工業", industry: "maker", alias: ["三菱重工業", "三菱重工", "MHI"],
+      traits: { rivals: ["川崎重工業", "IHI"], products: ["H3ロケット", "ガスタービン"] }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代にチームや団体で取り組んだ活動と、そこでのあなたの役割を教えてください。", fu: "そのチームにあなたがいなかったら、成果はどう変わっていたと思いますか？" }],
+      middle: [
+        { t: "motivation", real: 1, q: "なぜ重工業界で、三菱重工の何に惹かれたのですか？", fu: "三菱重工の、他社にはない具体的な強みは何だと思いますか？" },
+        { t: "deep", real: 0, q: "少し変わった質問です。3万円を今日1日で使い切るように言われたら、どう使いますか？", fu: "その使い方に、あなたの価値観はどう表れていますか？" }],
+      final: [{ t: "vision", real: 1, q: "希望部門では、実際にどんなことをやりたいと考えていますか？", fu: "第一志望の部門に配属されなかった場合、どうモチベーションを保ちますか？" }] } },
+    daikin: { label: "ダイキン工業", industry: "maker", alias: ["ダイキン工業", "ダイキン", "daikin"],
+      traits: { rivals: ["三菱電機", "パナソニック"], products: ["うるさらX"], value: "人を基軸におく経営" }, qs: {
+      first: [],
+      middle: [
+        { t: "strength", real: 1, q: "あなた自身について、周りの人からはどのような評価をされていますか？", fu: "その評価と自己認識に、ギャップがあれば教えてください。" },
+        { t: "vision", real: 1, q: "キャリアを通して成し遂げたいこと、目指す姿は何ですか？", fu: "その目標のために、ダイキンでどんな経験を積みたいですか？" }],
+      final: [
+        { t: "deep", real: 1, q: "学業や研究で取り組んできた内容を、説明してください。", fu: "その内容は、ダイキンの製品・技術にどう応用できると思いますか？" },
+        { t: "gakuchika", real: 1, q: "学生時代に力を入れて取り組んだことを教えてください。", fu: "その経験で得た力を、入社後どう発揮しますか？" }] } },
+    denso: { label: "デンソー", industry: "maker", alias: ["デンソー", "denso"],
+      traits: { rivals: ["アイシン", "ボッシュ"], products: ["QRコード", "カーエアコン"] }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代に力を入れたことと、そこで学んだことを社会でどう活かすかを教えてください。", fu: "その学びは、デンソーのどの事業・技術領域で活かせますか？" }],
+      middle: [],
+      final: [
+        { t: "kakugo", real: 1, q: "当社は第一志望ですか？　なぜですか？", fu: "第一志望である根拠を、他社と比較しながら具体的に説明してください。" },
+        { t: "kakugo", real: 1, q: "完成車メーカーも受けているようですが、それはなぜですか？", fu: "完成車メーカーと部品メーカー、あなたの中でどちらの優先度が高いですか？" }] } },
+    honda: { label: "本田技研工業", industry: "maker", alias: ["本田技研工業", "ホンダ", "honda", "本田"],
+      traits: { rivals: ["トヨタ自動車", "日産自動車"], products: ["N-BOX", "スーパーカブ"], value: "夢の力" }, qs: {
+      first: [{ t: "gakuchika", real: 0, q: "学生時代に挑戦した、誇れることは何ですか？", fu: "その挑戦で最も困難だった局面を、どう乗り越えましたか？" }],
+      middle: [{ t: "motivation", real: 0, q: "他の自動車メーカーにはない、Hondaならではの魅力は何だと思いますか？", fu: "その魅力に、あなた自身はどう共感し、体現できますか？" }],
+      final: [{ t: "vision", real: 0, q: "当社は社員の“夢”を大切にしています。あなた自身が実現したい夢は何ですか？", fu: "その夢は、Hondaでなければ実現できませんか？" }] } },
+    teikokuhotel: { label: "帝国ホテル", industry: "hr", alias: ["帝国ホテル", "imperialhotel"],
+      traits: { rivals: ["ホテルオークラ", "ホテルニューオータニ"], value: "最高のおもてなし" }, qs: {
+      first: [{ t: "industry", real: 1, q: "ホテルにおけるIoTの活用について、帝国ホテルではどんなことが考えられると思いますか？", fu: "他のホテルではなく、帝国ホテルだからこそできる施策は何だと思いますか？" }],
+      middle: [{ t: "motivation", real: 1, q: "なぜ、帝国ホテルの総合職を志望するのですか？", fu: "他のホテルチェーンではなく、帝国ホテルでなければならない理由は？" }],
+      final: [{ t: "industry", real: 1, q: "日本のMICE（国際会議・展示会等）の強化について、どう考えますか？", fu: "MICE強化に、あなた自身はどう貢献できると思いますか？" }] } },
+    ryohin: { label: "良品計画", industry: "hr", alias: ["良品計画", "無印良品", "無印", "muji"],
+      traits: { rivals: ["ニトリ", "イケア"], products: ["無印良品"], value: "感じ良いくらし" }, qs: {
+      first: [{ t: "industry", real: 0, q: "無印良品で一番好きな商品は何ですか？　よく行く店舗の課題も、あれば聞かせてください。", fu: "あなたがその店の店長なら、どう改善しますか？" }],
+      middle: [{ t: "vision", real: 0, q: "良い店長・良いリーダーとは、どんな人だと思いますか？", fu: "そのリーダー像に近づくために、学生時代に取り組んだことはありますか？" }],
+      final: [{ t: "motivation", real: 0, q: "数ある企業の中で、なぜ良品計画なのですか？", fu: "他の小売業と比較して、良品計画を選ぶ決め手は何ですか？" }] } },
+    asahishimbun: { label: "朝日新聞社", industry: "koukoku", alias: ["朝日新聞", "朝日新聞社", "asahishimbun"],
+      traits: { rivals: ["読売新聞", "毎日新聞"], products: ["朝日新聞デジタル"] }, qs: {
+      first: [{ t: "motivation", real: 0, q: "なぜジャーナリズムで、その中でもなぜ朝日新聞なのですか？", fu: "他の新聞社ではなく朝日新聞である理由を、具体的に聞かせてください。" }],
+      middle: [{ t: "industry", real: 0, q: "最近気になったニュースや記事は何ですか？", fu: "そのニュースに、あなたが記者ならどう切り込みますか？" }],
+      final: [{ t: "deep", real: 0, q: "当社の過去の報道への批判も含めて、朝日新聞の報道姿勢をどう考えていますか？", fu: "その考えを踏まえて、あなたはどんな記者になりたいですか？" }] } },
+    pola: { label: "ポーラ", industry: "food", alias: ["ポーラ", "pola"],
+      traits: { rivals: ["資生堂", "コーセー"], products: ["B.A", "リンクルショット"], value: "美と健康を願う人々に" }, qs: {
+      first: [{ t: "motivation", real: 1, q: "あなたの就活の軸と、その軸を設定した理由を教えてください。", fu: "その軸に照らして、ポーラ以外にはどんな企業を検討しましたか？" }],
+      middle: [{ t: "deep", real: 1, q: "（1枚の絵画をお見せします）この絵に、タイトルとストーリーをつけてください。", fu: "なぜそのタイトルとストーリーにしたのか、発想のプロセスを聞かせてください。" }],
+      final: [
+        { t: "gakuchika", real: 1, q: "これまでの人生で一番頑張ったことと、ポーラでやりたいことを聞かせてください。", fu: "その頑張りを、入社後のポーラでどう再現しますか？" },
+        { t: "kakugo", real: 1, q: "他社にはないポーラの魅力は何だと思いますか？　また、転勤は可能ですか？", fu: "その魅力を踏まえて、あなたはポーラでどんな価値を提供したいですか？" }] } },
+    japanpost: { label: "日本郵政グループ", industry: "infra", alias: ["日本郵政", "日本郵便", "郵政", "japanpost"],
+      traits: { rivals: ["ヤマト運輸"], products: ["ゆうパック"] }, qs: {
+      first: [{ t: "strength", real: 1, q: "学生時代のサークルや活動について、周囲からどんな評価を受けていましたか？", fu: "その評価と、実際の自己認識にギャップはありますか？" }],
+      middle: [],
+      final: [
+        { t: "kakugo", real: 1, q: "なぜ日本郵便で、なぜこの職種・この働き方なのですか？　3つとも聞かせてください。", fu: "その理由を、過去のどの経験と結びつけて話せますか？" },
+        { t: "kakugo", real: 1, q: "転勤には対応できますか？", fu: "転勤先での生活や仕事に、不安はありませんか？" }] } },
+    daiwasec: { label: "大和証券", industry: "kinyu", alias: ["大和証券", "daiwa"],
+      traits: { rivals: ["野村證券", "SMBC日興証券"] }, qs: {
+      first: [{ t: "deep", real: 0, q: "あなたの長所と短所、そして過去の失敗経験を教えてください。", fu: "その失敗から学んだことを、今後どう活かしますか？" }],
+      middle: [],
+      final: [
+        { t: "motivation", real: 1, q: "なぜ金融業界なのですか？　他に見ている会社も教えてください。", fu: "金融業界の中でも、証券を選ぶ理由は何ですか？" },
+        { t: "motivation", real: 1, q: "なぜ大和証券を志望するのですか？", fu: "他の証券会社ではなく、大和証券である決め手は？" },
+        { t: "deep", real: 1, q: "金融業界において、資格は大切だと思いますか？", fu: "今後、どんな資格の取得を考えていますか？" }] } },
+    google: { label: "グーグル", industry: "it", alias: ["グーグル", "google", "Google"],
+      traits: { rivals: ["アマゾン", "マイクロソフト"], products: ["Google検索", "YouTube", "Googleマップ"], value: "ユーザーに焦点を絞る" }, qs: {
+      first: [
+        { t: "gakuchika", real: 1, q: "学生時代に力を入れたことを教えてください。深掘りさせてもらいます。", fu: "その経験の中で、最も苦労した“意思決定”は何でしたか？" },
+        { t: "strength", real: 1, q: "あなたの強みは何ですか？　周囲からはどんな人だと言われますか？", fu: "その強みを裏付ける、具体的なエピソードはありますか？" }],
+      middle: [{ t: "industry", real: 1, q: "Googleのプロダクトを使って、新規ビジネスを考えてください。", fu: "そのアイデアの収益化モデルは、どう考えますか？" }],
+      final: [{ t: "deep", real: 1, q: "困難な経験と、その乗り越え方を聞かせてください。", fu: "いま同じ状況が起きたら、当時と違うやり方をしますか？" }] } },
+    mizuho: { label: "みずほフィナンシャルグループ", industry: "kinyu", alias: ["みずほ", "みずほフィナンシャルグループ", "みずほ銀行", "mizuho"],
+      traits: { rivals: ["三菱UFJ銀行", "三井住友銀行"], value: "共に挑む。共に実る。" }, qs: {
+      first: [{ t: "deep", real: 1, q: "小学生のころ、あなたはどんな子どもでしたか？", fu: "その性格は、いまのあなたにどう影響していますか？" }],
+      middle: [{ t: "motivation", real: 1, q: "なぜみずほなのですか？　三菱UFJや三井住友でも良いのではありませんか？", fu: "メガバンク3行を比較した上での、みずほの違いは何ですか？" }],
+      final: [{ t: "kakugo", real: 1, q: "いまここで内定を出したら、承諾しますか？", fu: "承諾する場合、進行中の他社の選考はどうしますか？" }] } },
+    kddi: { label: "KDDI", industry: "it", alias: ["KDDI", "au"],
+      traits: { rivals: ["NTTドコモ", "ソフトバンク"], products: ["au", "povo"], value: "通信を核にした事業の多角化" }, qs: {
+      first: [{ t: "gakuchika", real: 1, q: "学生時代に力を入れたことを教えてください。", fu: "その経験で得た学びを、仕事にどう活かせますか？" }],
+      middle: [],
+      final: [
+        { t: "kakugo", real: 1, q: "なぜ通信業界なのですか？　そのビジョンなら、他業界でも実現できるのではありませんか？", fu: "通信業界の中でも、KDDIでなければならない理由は？" },
+        { t: "vision", real: 1, q: "配属希望と、そこで何がしたいのかを聞かせてください。", fu: "その業務が、あなたのやりたいことと合致しなかった場合はどうしますか？" }] } }
   };
 
   function normComp(s) {
@@ -1286,6 +1629,126 @@
       }
     }
     return best;
+  }
+
+  /* ================= 第2層・推定出題エンジン =================
+     108社超のリサーチから抽出した出題アーキタイプ（型）と、
+     各社の属性データ traits を掛け合わせて実行時に質問を合成する。
+     est:1 の質問には「推定」バッジが付き、実出題とは明確に区別する。
+     sig は同一面接内での重複出題を防ぐための照合パターン。 */
+  var ARCHETYPES = {
+    news_about: { stage: "first", t: "industry", sig: /ニュース/,
+      make: function (tr, name) {
+        return { q: "最近の" + name + "に関するニュースや話題で、気になったものはありますか？",
+                 fu: "そのニュースを見て、" + name + "にどんな印象を持ちましたか？　あなた自身の言葉で聞かせてください。" };
+      } },
+    product_love: { stage: "first", t: "industry", sig: /好きな|気に入って|使ったこと/,
+      make: function (tr, name) {
+        if (tr.products && tr.products.length) {
+          return { q: "「" + tr.products[0] + "」をはじめ、" + name + "の商品・サービスの中で、あなたが一番好きなもの・気になっているものは何ですか？",
+                   fu: "その良さを、まだ使ったことがない人に勧めるとしたら、どう伝えますか？" };
+        }
+        return { q: name + "の商品やサービスに、実際に触れたことはありますか？　率直な印象を聞かせてください。",
+                 fu: "その印象を、当社の社員に直接伝えるとしたら、どんな言葉を選びますか？" };
+      } },
+    values_resonance: { stage: "first", t: "motivation", sig: null,
+      make: function (tr, name) {
+        if (!tr.value) return null;
+        return { q: name + "が大切にしている「" + tr.value + "」という考え方について、あなた自身の経験と重なる部分はありますか？",
+                 fu: "その経験の中で、「" + tr.value + "」を最も体現できた瞬間を、場面が浮かぶように話してください。" };
+      } },
+    childhood: { stage: "first", t: "deep", sig: /子ども|幼少|小学生|中学|高校時代/,
+      make: function (tr, name) {
+        return { q: "少し遡って伺います。子どものころのあなたは、どんな子どもでしたか？　印象的な出来事と一緒に教えてください。",
+                 fu: "そのころの性格は、いまのあなたにどうつながっていますか？" };
+      } },
+    why_vs_rival: { stage: "middle", t: "motivation", sig: /ではなく|でなければ/,
+      make: function (tr, name) {
+        if (tr.rivals && tr.rivals.length) {
+          return { q: tr.rivals.join("や") + "など競合他社もあるなかで、なぜ" + name + "なのですか？",
+                   fu: "その理由は" + tr.rivals[0] + "にも当てはまりませんか？　" + name + "だけの決め手を、もう一段掘って聞かせてください。" };
+        }
+        return { q: "同業他社もあるなかで、なぜ" + name + "なのですか？",
+                 fu: "その理由は競合他社にも当てはまりませんか？　" + name + "だけの決め手を、もう一段掘って聞かせてください。" };
+      } },
+    improve_product: { stage: "middle", t: "industry", sig: /改善|課題/,
+      make: function (tr, name) {
+        if (tr.products && tr.products.length) {
+          var pd = tr.products[tr.products.length - 1];
+          return { q: "「" + pd + "」について、率直に感じている課題と、あなたなりの改善案を聞かせてください。",
+                   fu: "その改善案を実行するとしたら、一番の障害はどこにあると思いますか？" };
+        }
+        return { q: name + "の商品・サービスの課題を1つ挙げて、あなたなりの改善案を提案してください。",
+                 fu: "その改善案を実行するとしたら、一番の障害はどこにあると思いますか？" };
+      } },
+    metaphor: { stage: "middle", t: "deep", sig: /例えると/,
+      make: function (tr, name) {
+        if (!tr.metaphor) return null;
+        return { q: "少し変わった質問をします。あなた自身を" + tr.metaphor + "に例えると、何ですか？",
+                 fu: "その例えは、" + name + "のどんな仕事とつながると思いますか？" };
+      } },
+    case_new: { stage: "final", t: "industry", sig: /新規|新しい事業|提案して/,
+      make: function (tr, name) {
+        if (tr.products && tr.products.length) {
+          return { q: "もしあなたが" + name + "の新規事業担当なら、「" + tr.products[0] + "」の次に何を仕掛けますか？　この場で構想して構いません。",
+                   fu: "その事業を、なぜ他社ではなく" + name + "がやるべきなのですか？" };
+        }
+        return { q: name + "が次に手がけるべき新しい事業やサービスを、1つ提案してください。",
+                 fu: "その事業を、なぜ他社ではなく" + name + "がやるべきなのですか？" };
+      } },
+    future_company: { stage: "final", t: "vision", sig: /10年後/,
+      make: function (tr, name) {
+        return { q: "10年後の" + name + "は、どんな会社になっているべきだと思いますか？　そのとき、あなたはそこで何をしていますか？",
+                 fu: "その未来のために、入社1年目のあなたは何から始めますか？" };
+      } },
+    first_choice: { stage: "final", t: "kakugo", sig: /第一志望|内定/,
+      make: function (tr, name) {
+        return { q: "率直に伺います。" + name + "は第一志望ですか？　他社の選考状況も含めて教えてください。",
+                 fu: "他社から先に内定が出ても、いまの言葉は変わりませんか？" };
+      } },
+    relocation: { stage: "final", t: "kakugo", sig: /転勤|配属|勤務地/,
+      make: function (tr, name) {
+        return { q: "全国転勤や、希望と異なる部署への配属の可能性もあります。それでも" + name + "で働きたいと言えますか？",
+                 fu: "望まない配属になった場合、最初の1年をどう過ごしますか？" };
+      } }
+  };
+
+  /* 業界ごとのデフォルト・アーキタイプセット（トレイト不足の型は自動スキップ） */
+  var INDUSTRY_ARCH = {
+    it:     ["news_about", "product_love", "improve_product", "why_vs_rival", "case_new", "future_company"],
+    shosha: ["news_about", "values_resonance", "why_vs_rival", "case_new", "future_company"],
+    kinyu:  ["childhood", "news_about", "values_resonance", "why_vs_rival", "first_choice", "relocation"],
+    consul: ["news_about", "why_vs_rival", "case_new", "first_choice"],
+    maker:  ["product_love", "news_about", "values_resonance", "improve_product", "why_vs_rival", "future_company", "relocation"],
+    koukoku:["product_love", "news_about", "improve_product", "why_vs_rival", "case_new", "future_company"],
+    food:   ["product_love", "news_about", "values_resonance", "improve_product", "why_vs_rival", "metaphor", "relocation"],
+    infra:  ["news_about", "values_resonance", "why_vs_rival", "relocation", "future_company", "first_choice"],
+    estate: ["news_about", "values_resonance", "why_vs_rival", "relocation", "future_company", "case_new"],
+    ent:    ["product_love", "news_about", "improve_product", "why_vs_rival", "metaphor", "case_new", "future_company"],
+    hr:     ["product_love", "news_about", "values_resonance", "improve_product", "why_vs_rival", "relocation", "future_company"]
+  };
+
+  function deriveQuestions(comp, stage) {
+    var name = comp ? comp.label : (state.company || "").trim();
+    if (!name) return [];
+    var traits = (comp && comp.traits) || {};
+    var ids = INDUSTRY_ARCH[comp ? comp.industry : state.industry] || [];
+    if (comp && comp.extra) ids = ids.concat(comp.extra);
+    var out = [], seen = {};
+    ids.forEach(function (id) {
+      if (seen[id]) return;
+      seen[id] = true;
+      var a = ARCHETYPES[id];
+      if (!a || a.stage !== stage) return;
+      var item = a.make(traits, name);
+      if (!item) return;
+      item.t = a.t;
+      item.real = 0;
+      item.est = 1;
+      item.sig = a.sig;
+      out.push(item);
+    });
+    return out;
   }
 
   /* ================= 業界別ペルソナ ================= */
@@ -1905,10 +2368,16 @@
     if (!v) { note.textContent = ""; note.className = "match-note"; return; }
     var c = matchCompany(v);
     if (c) {
-      note.textContent = "✓ " + c.label + "の実出題データを収録済み（就活体験談ベース・" + COMPANY_AS_OF + "編集）";
+      var rc = 0;
+      ["first", "middle", "final"].forEach(function (st) {
+        (c.qs[st] || []).forEach(function (q) { if (q.real) rc++; });
+      });
+      note.textContent = rc
+        ? "✓ " + c.label + "の実出題データを収録済み（就活体験談ベース・" + COMPANY_AS_OF + "編集）"
+        : "✓ " + c.label + "を収録済み。実出題の確認報告が少ないため、収録データと業界の出題パターンからの推定質問（推定バッジ付き）を中心に出題します。";
       note.className = "match-note ok";
     } else {
-      note.textContent = "この企業の実出題データは未収録です。業界頻出質問＋企業名の反映で練習できます（収録" + Object.keys(COMPANY_DATA).length + "社）。";
+      note.textContent = "この企業は未収録ですが、業界の出題パターンからAIが推定した質問（推定バッジ付き）＋業界頻出質問で練習できます（収録" + Object.keys(COMPANY_DATA).length + "社）。";
       note.className = "match-note none";
     }
   });
@@ -1946,6 +2415,8 @@
     return {
       t: item.t,
       real: !!item.real,
+      est: !!item.est,
+      sig: item.sig || null,
       q: item.q.replace(/\{company\}/g, companyName()),
       fu: item.fu ? item.fu.replace(/\{company\}/g, companyName()) : null
     };
@@ -1955,11 +2426,25 @@
     var mains = shuffle(COMMON_Q[state.stage]).slice(0, 4).map(fillCompany);
     var slots = [mains[0], mains[1], mains[2], mains[3]];
     state.comp = matchCompany(state.company);
-    if (state.comp) {
-      var cqs = shuffle(state.comp.qs[state.stage] || []).slice(0, 2).map(fillCompany);
-      if (cqs[0]) slots[0] = cqs[0];
-      if (cqs[1]) slots[1] = cqs[1];
-    }
+
+    /* 企業スロット（最大2問）: 実出題 → 収録編集質問 → 推定質問 の優先順 */
+    var stored = state.comp ? shuffle((state.comp.qs[state.stage] || []).slice()) : [];
+    var reals = stored.filter(function (q) { return q.real; });
+    var edits = stored.filter(function (q) { return !q.real; });
+    var derived = shuffle(deriveQuestions(state.comp, state.stage));
+    var pool = reals.concat(edits).concat(derived).map(fillCompany);
+
+    /* 推定質問は、確定枠・既選択枠と趣旨が重複するものをスキップ */
+    var fixed = [INTRO_Q[state.stage], INDUSTRY_Q[state.industry][state.stage], slots[2], slots[3], REVERSE_Q[state.stage]];
+    var picked = [];
+    pool.forEach(function (it) {
+      if (picked.length >= 2) return;
+      if (it.est && it.sig && picked.concat(fixed).some(function (x) { return x && it.sig.test(x.q); })) return;
+      picked.push(it);
+    });
+    if (picked[0]) slots[0] = picked[0];
+    if (picked[1]) slots[1] = picked[1];
+
     return [
       fillCompany(INTRO_Q[state.stage]),
       slots[0],
@@ -2043,8 +2528,9 @@
     badge.textContent = st.label;
     badge.className = "stage-badge" + (state.stage === "final" ? " final" : "");
     var realCount = state.queue.filter(function (q) { return q.real; }).length;
+    var estCount = state.queue.filter(function (q) { return q.est; }).length;
     $("ivContext").textContent = industryObj().label + (state.company ? "／" + state.company : "") +
-      (realCount ? "　✓実出題" + realCount + "問" : "");
+      (realCount ? "　✓実出題" + realCount + "問" : "") + (estCount ? "　推定" + estCount + "問" : "");
     $("interviewerBox").innerHTML = portraitImg(state.interviewer.img, "portrait");
     $("nameplate").innerHTML = "<b>" + state.persona.name + "</b>　" + state.persona.title;
 
@@ -2074,6 +2560,7 @@
     $("qMetaNum").textContent = "質問 " + (i + 1) + " / " + TOTAL;
     $("fuTag").style.display = item.t === "followup" ? "" : "none";
     $("realTag").style.display = item.real ? "" : "none";
+    $("estTag").style.display = item.est ? "" : "none";
     if (item.t === "followup") {
       /* 深堀り質問は文自体が相槌を含むので、相槌行は出さない */
       $("qGreeting").style.display = "none";
@@ -2138,7 +2625,7 @@
       industry: industryObj().label, company: state.company,
       elapsed: state.elapsed, overall: overallRating(),
       items: results.map(function (r) {
-        return { q: r.item.q, t: r.item.t, real: r.item.real ? 1 : 0, answer: r.answer, score: r.fb.score,
+        return { q: r.item.q, t: r.item.t, real: r.item.real ? 1 : 0, est: r.item.est ? 1 : 0, answer: r.answer, score: r.fb.score,
                  good: r.fb.good, bad: r.fb.bad, liked: false, drafts: [] };
       })
     });
@@ -2220,7 +2707,7 @@
       r.fb.bad.forEach(function (b) { fbHtml += '<li class="fb-bad">' + esc(b) + "</li>"; });
       div.innerHTML =
         '<div class="qa-head"><span class="qa-rating r' + r.fb.score + '">' + RATINGS[r.fb.score] + '</span>' +
-        '<p class="qa-q">Q' + (i + 1) + '．' + esc(r.item.q) + (r.item.t === "followup" ? '　<span class="fu-chip">深堀り</span>' : '') + (r.item.real ? '　<span class="real-chip">実出題</span>' : '') + '</p>' +
+        '<p class="qa-q">Q' + (i + 1) + '．' + esc(r.item.q) + (r.item.t === "followup" ? '　<span class="fu-chip">深堀り</span>' : '') + (r.item.real ? '　<span class="real-chip">実出題</span>' : '') + (r.item.est ? '　<span class="est-chip" title="収録データと業界の出題パターンからAIが推定した質問">推定</span>' : '') + '</p>' +
         '<button class="like-btn" data-like="' + i + '" aria-pressed="false" title="復習ノートに保存">☆ LIKE!</button></div>' +
         (r.answer.trim()
           ? '<details><summary>あなたの回答を表示</summary><div class="qa-answer">' + esc(r.answer) + '</div></details>'
@@ -2412,7 +2899,7 @@
         (it.bad || []).forEach(function (b) { fbHtml += '<li class="fb-bad">' + esc(b) + "</li>"; });
         div.innerHTML =
           '<div class="qa-head"><span class="qa-rating r' + it.score + '">' + RATINGS[it.score] + '</span>' +
-          '<p class="qa-q">' + esc(it.q) + (it.real ? '　<span class="real-chip">実出題</span>' : '') + progChips(it.score, it.drafts) + '</p>' +
+          '<p class="qa-q">' + esc(it.q) + (it.real ? '　<span class="real-chip">実出題</span>' : '') + (it.est ? '　<span class="est-chip" title="収録データと業界の出題パターンからAIが推定した質問">推定</span>' : '') + progChips(it.score, it.drafts) + '</p>' +
           '<button class="like-btn' + (it.liked ? ' on' : '') + '" data-hlike="' + s.id + ':' + x.idx + '" aria-pressed="' + String(!!it.liked) + '">' + (it.liked ? '★ LIKE!済' : '☆ LIKE!') + '</button></div>' +
           (it.answer && it.answer.trim()
             ? '<details><summary>当時の回答と添削を表示</summary><div class="qa-answer">' + esc(it.answer) + '</div><ul class="fb-list">' + fbHtml + '</ul></details>'
