@@ -236,6 +236,7 @@
   .meter .m-head { display: flex; align-items: baseline; gap: 8px; font-size: .82rem; margin-bottom: 5px; }
   .meter .m-head b { font-weight: 600; }
   .meter .m-head .m-n { color: var(--ink-3); font-size: .7rem; }
+  .meter .m-head .m-low { color: var(--ink-3); font-size: .64rem; font-weight: 600; border: 1px solid var(--hairline); border-radius: 4px; padding: 1px 5px; }
   .meter .m-head .m-v { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
   .meter .track { height: 6px; border-radius: 3px; background: var(--tile-2); overflow: hidden; }
   .meter .fill { height: 100%; border-radius: 3px; background: var(--blue); width: var(--w, 0%); animation: growW .6s ease; }
@@ -281,23 +282,26 @@
   .fb-list li.fb-bad { background: var(--bad-tint); }
   .fb-list li.fb-good::before { content: "○ よかった点"; color: var(--good); }
   .fb-list li.fb-bad::before { content: "✕ ダメ出し"; color: var(--bad); }
+  .fb-more { font-size: .74rem; color: var(--ink-3); margin: 8px 2px 0; }
 
   .qa-chat { margin-top: 14px; border-top: 1px solid var(--tile-2); padding-top: 14px; }
   .qa-chat-label { font-size: .72rem; letter-spacing: .04em; color: var(--ink-3); font-weight: 600; margin-bottom: 10px; }
   .qa-chips { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 10px; }
   .qa-chip { border: none; color: var(--blue); background: none; border-radius: 0; padding: 2px 0; font-size: .84rem; font-weight: 500; }
   .qa-chip:hover { background: none; text-decoration: underline; }
+  .qa-chip.used { opacity: .5; }
   .qa-thread { display: flex; flex-direction: column; gap: 8px; }
   .bubble { max-width: 92%; padding: 10px 15px; border-radius: 18px; font-size: .87rem; line-height: 1.7; white-space: pre-wrap; }
   .bubble.me { align-self: flex-end; background: var(--blue); color: #fff; border-bottom-right-radius: 5px; }
   .bubble.coach { align-self: flex-start; background: var(--tile-2); color: var(--ink); border: none; border-bottom-left-radius: 5px; }
-  .qa-free { display: flex; gap: 8px; margin-top: 10px; }
-  .qa-free input {
+  .qa-free { display: flex; gap: 8px; margin-top: 10px; align-items: flex-end; }
+  .qa-free textarea.free-ta {
     flex: 1; padding: 9px 14px; font-size: .87rem; border: 1px solid var(--hairline);
-    border-radius: 980px; background: #fff; color: var(--ink); font-family: var(--sans);
+    border-radius: 18px; background: #fff; color: var(--ink); font-family: var(--sans);
+    resize: none; overflow: hidden; line-height: 1.5; max-height: 120px;
   }
-  .qa-free input:focus-visible { border-color: var(--blue); box-shadow: 0 0 0 4px var(--focus-ring); }
-  .qa-free button { border: none; background: var(--blue); color: #fff; border-radius: 980px; padding: 9px 18px; font-size: .82rem; font-weight: 500; }
+  .qa-free textarea.free-ta:focus-visible { border-color: var(--blue); box-shadow: 0 0 0 4px var(--focus-ring); }
+  .qa-free button { border: none; background: var(--blue); color: #fff; border-radius: 980px; padding: 9px 18px; font-size: .82rem; font-weight: 500; flex-shrink: 0; }
   .qa-free button:hover { background: var(--blue-hover); }
 
   .polish-ta {
@@ -1879,7 +1883,7 @@
   /* ================= 添削エンジン v2 ================= */
 
   var RATINGS = ["✕", "△", "〇", "◎"];
-  var DEEP_TYPES = { gakuchika: 1, deep: 1, strength: 1, vision: 1, kakugo: 1, followup: 1 };
+  var DEEP_TYPES = { gakuchika: 1, deep: 1, strength: 1, vision: 1, kakugo: 1, followup: 1, motivation: 1, industry: 1 };
 
   /* 言い回しのバリエーション：full[0]=初出（丁寧に解説）, full[1]=2回目（短く言い換え）, xref=3回目以降（相互参照） */
   var PH = {
@@ -1972,6 +1976,12 @@
     reverse_backed: { kind: "good", full: [
       "なぜそれを聞きたいのか、質問の背景まで添えられていて意欲が伝わります。"
     ], xref: "" }
+  };
+
+  /* 減点の重み: 構造的な欠陥=1点／文体レベルの軽微な癖=0.5点。スコアの説明力を上げるための重み付け */
+  var BAD_WEIGHT = {
+    skipped: 1, too_short: 1, no_numbers: 1, no_structure: 1, generic_motivation: 1, reverse_none: 1,
+    too_long: 0.5, no_conclusion: 0.5, no_learning: 0.5, we_only: 0.5, vague: 0.5, hedging: 0.5, filler: 0.5, reverse_notq: 0.5
   };
 
   var BAD_PRIORITY  = ["skipped", "reverse_none", "reverse_notq", "too_short", "too_long", "no_structure", "no_numbers", "we_only", "generic_motivation", "no_learning", "no_conclusion", "vague", "hedging", "filler"];
@@ -2079,8 +2089,9 @@
     meta.axes.assertive = assertive;
 
     var goods = findings.filter(function (f) { return PH[f.id].kind === "good"; }).length;
-    var bads = findings.filter(function (f) { return PH[f.id].kind === "bad"; }).length;
-    var score = Math.max(0, Math.min(3, 2 + Math.min(goods, 2) - bads));
+    var badWeight = findings.filter(function (f) { return PH[f.id].kind === "bad"; })
+      .reduce(function (sum, f) { return sum + (BAD_WEIGHT[f.id] != null ? BAD_WEIGHT[f.id] : 1); }, 0);
+    var score = Math.max(0, Math.min(3, Math.round(2 + Math.min(goods, 2) - badWeight)));
     return { score: score, findings: findings, meta: meta };
   }
 
@@ -2092,7 +2103,7 @@
   function renderAllFindings(results) {
     var seen = {}, firstQ = {}, rawCounts = {};
     results.forEach(function (r, i) {
-      var goods = [], bads = [];
+      var goods = [], bads = [], totalBad = 0;
       var ordered = r.fb.findings.slice().sort(function (a, b) {
         var pa = PH[a.id].kind === "bad" ? BAD_PRIORITY.indexOf(a.id) : GOOD_PRIORITY.indexOf(a.id);
         var pb = PH[b.id].kind === "bad" ? BAD_PRIORITY.indexOf(b.id) : GOOD_PRIORITY.indexOf(b.id);
@@ -2102,8 +2113,9 @@
         var ph = PH[f.id];
         rawCounts[f.id] = (rawCounts[f.id] || 0) + 1;
         var isBad = ph.kind === "bad";
+        if (isBad) totalBad++;
         if (!isBad && goods.length >= 2) return;   /* 褒めは1問2つまで */
-        if (isBad && bads.length >= 3) return;      /* 指摘は1問3つまで */
+        if (isBad && bads.length >= 3) return;      /* 指摘は1問3つまで（超過分はmoreBadで件数のみ提示） */
         var occ = seen[f.id] || 0;
         var data = f.data;
         var text;
@@ -2116,6 +2128,7 @@
       });
       r.fb.good = goods;
       r.fb.bad = bads;
+      r.fb.moreBad = Math.max(0, totalBad - bads.length);
     });
     return rawCounts;
   }
@@ -2175,6 +2188,7 @@
       if (fb.bad.length) t += "\n【減点】\n" + fb.bad.map(function (b) { return "・" + b; }).join("\n") + "\n";
       t += "\n判定は5観点：①分量（250〜550文字）②結論ファースト ③数字の具体性 ④エピソード構成 ⑤言い切り。";
       if (!m.skipped) t += "\nこの回答は " + m.len + "文字、第一文" + m.firstLen + "文字でした。";
+      if (fb.moreBad) t += "\n※このほかに軽微な指摘が" + fb.moreBad + "件あり、スコアには反映済みです（上の一覧は主要な" + fb.bad.length + "件のみ表示しています）。";
       return t;
     }
     if (kind === "fix") {
@@ -2186,10 +2200,26 @@
     if (kind === "model") {
       return MODEL_ANSWERS[item.t] || MODEL_ANSWERS.deep;
     }
-    return "デモ版のコーチが答えられるのは次の3つです。\n・「なぜこの評価？」— 加点・減点の内訳\n・「どう直せば◎になる？」— 修正手順\n・「お手本の型を見せて」— この質問タイプの模範構成\n上のボタンから選ぶか、その言葉を含めて質問してください。";
+    if (kind === "shorten") {
+      return "短くする一番簡単な方法は、エピソードを1つに絞ることです。「状況→行動→結果」のうち、状況説明を1文に圧縮し、行動と結果に文字数を割り振ってください。" + (m.len ? "今の回答（" + m.len + "文字）なら、まず状況説明を半分に削るだけで250字前後に収まるはずです。" : "");
+    }
+    if (kind === "universal") {
+      return "「他社にも言えるのでは」を防ぐ一番の方法は、固有名詞を1つ増やすことです。社名・製品名・実際に見聞きしたニュースのどれか1つを理由の中に入れるだけで、その場しのぎではないことが伝わります。";
+    }
+    if (kind === "opening") {
+      return "自己紹介・冒頭は「名乗り→一番の実績1つ→入社後への接続」の3行で45秒以内にまとめるのが鉄則です。全部を話そうとせず、一番強いカードだけを切りましょう。";
+    }
+    if (kind === "nervous") {
+      return "緊張は準備量に反比例します。完璧な原稿を作るより、この一問だけを声に出して3回練習してみてください。3回目には言葉が体に馴染んで、緊張の質が変わるはずです。";
+    }
+    return "デモ版のコーチが答えられるのは、例えばこんな質問です。\n・「なぜこの評価？」— 加点・減点の内訳\n・「どう直せば◎になる？」— 修正手順\n・「お手本の型を見せて」— この質問タイプの模範構成\n・「短くするには？」「他社でも通用しない？」「緊張しないためには？」なども聞けます。\n気になることを、その言葉を含めて質問してみてください。";
   }
 
   function routeFreeText(text) {
+    if (/短く|簡潔|要約|コンパクト|長すぎ/.test(text)) return "shorten";
+    if (/他社|他の会社|他の企業|どこでも|通用|汎用/.test(text)) return "universal";
+    if (/自己紹介|話し方|冒頭|第一声|喋り方|しゃべり方/.test(text)) return "opening";
+    if (/緊張|あがり症|噛んで|噛んじゃ|不安/.test(text)) return "nervous";
     if (/なぜ|理由|どうして|基準|点数/.test(text)) return "why";
     if (/直|改善|どうすれば|良くする|よくする|上げ/.test(text)) return "fix";
     if (/例|手本|模範|理想|型/.test(text)) return "model";
@@ -2626,7 +2656,7 @@
       elapsed: state.elapsed, overall: overallRating(),
       items: results.map(function (r) {
         return { q: r.item.q, t: r.item.t, real: r.item.real ? 1 : 0, est: r.item.est ? 1 : 0, answer: r.answer, score: r.fb.score,
-                 good: r.fb.good, bad: r.fb.bad, liked: false, drafts: [] };
+                 good: r.fb.good, bad: r.fb.bad, moreBad: r.fb.moreBad || 0, liked: false, drafts: [] };
       })
     });
     if (hist.sessions.length > 50) hist.sessions = hist.sessions.slice(-50);
@@ -2670,7 +2700,9 @@
     var axes = axisScores(results);
     $("metersBox").innerHTML = axes.map(function (a) {
       return '<div class="meter">' +
-        '<div class="m-head"><b>' + a.label + '</b><span class="m-n">対象' + a.n + '問</span><span class="m-v">' + a.pct + '%</span></div>' +
+        '<div class="m-head"><b>' + a.label + '</b><span class="m-n">対象' + a.n + '問</span>' +
+        (a.n > 0 && a.n < 2 ? '<span class="m-low" title="対象になる質問が少ないため、参考値として見てください">参考</span>' : '') +
+        '<span class="m-v">' + a.pct + '%</span></div>' +
         '<div class="track"><div class="fill" style="--w:' + a.pct + '%"></div></div></div>';
     }).join("");
 
@@ -2680,9 +2712,16 @@
       .sort(function (a, b) { return rawCounts[b] - rawCounts[a]; })
       .map(function (id) { return fmt(OVERALL_BAD[id], { c: rawCounts[id] }); });
     if (!badPatterns.length) {
-      var singleBads = [];
-      results.forEach(function (r) { r.fb.bad.forEach(function (b) { if (singleBads.length < 3) singleBads.push(b); }); });
-      badPatterns = singleBads;
+      var allBads = [];
+      results.forEach(function (r) {
+        r.fb.findings.forEach(function (f) {
+          if (PH[f.id].kind !== "bad") return;
+          var pi = BAD_PRIORITY.indexOf(f.id);
+          allBads.push({ pi: pi < 0 ? 999 : pi, text: fmt(PH[f.id].full[0], f.data) });
+        });
+      });
+      allBads.sort(function (a, b) { return a.pi - b.pi; });
+      badPatterns = allBads.slice(0, 3).map(function (x) { return x.text; });
     }
     var goodPatterns = Object.keys(rawCounts)
       .filter(function (id) { return PH[id].kind === "good" && rawCounts[id] >= 3 && OVERALL_GOOD[id]; })
@@ -2713,6 +2752,7 @@
           ? '<details><summary>あなたの回答を表示</summary><div class="qa-answer">' + esc(r.answer) + '</div></details>'
           : '<p style="color: var(--ink-soft); font-size:.84rem; margin:8px 0 0;">（スキップ）</p>') +
         '<ul class="fb-list">' + fbHtml + '</ul>' +
+        (r.fb.moreBad ? '<p class="fb-more">ほかに軽微な指摘が' + r.fb.moreBad + '件あります（総合スコアには反映済みです）</p>' : '') +
         '<div class="qa-chat">' +
           '<div class="qa-chat-label">この評価についてコーチに質問する</div>' +
           '<div class="qa-chips">' +
@@ -2722,7 +2762,7 @@
           '</div>' +
           '<div class="qa-thread" id="thread-' + i + '"></div>' +
           '<div class="qa-free">' +
-            '<input type="text" id="free-' + i + '" placeholder="自由に質問（例：なぜ△なの？）" spellcheck="false" autocorrect="off" autocapitalize="off" aria-label="コーチへの質問">' +
+            '<textarea class="free-ta" id="free-' + i + '" rows="1" placeholder="自由に質問（例：なぜ△なの？／Shift+Enterで改行）" spellcheck="false" autocorrect="off" autocapitalize="off" aria-label="コーチへの質問"></textarea>' +
             '<button data-free="' + i + '">送信</button>' +
           '</div>' +
         '</div>' +
@@ -2736,6 +2776,7 @@
         var ci = +chip.dataset.i;
         addBubble(ci, "me", chip.textContent);
         addBubble(ci, "coach", coachReply(chip.dataset.kind, results[ci]));
+        chip.classList.add("used");
         return;
       }
       var pol = e.target.closest("[data-polish]");
@@ -2776,10 +2817,17 @@
       if (send) sendFree(+send.dataset.free);
     };
     list.onkeydown = function (e) {
-      if (e.key === "Enter" && e.target.id && e.target.id.indexOf("free-") === 0) {
+      if (e.key === "Enter" && !e.shiftKey && e.target.id && e.target.id.indexOf("free-") === 0) {
+        e.preventDefault();
         sendFree(+e.target.id.slice(5));
       }
     };
+    list.addEventListener("input", function (e) {
+      if (e.target.classList.contains("free-ta")) {
+        e.target.style.height = "auto";
+        e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px";
+      }
+    });
 
     /* 次のステップ：段階アドバイス＋一番弱い軸への処方箋 */
     var adviceByStage = {
@@ -2800,6 +2848,7 @@
     var text = input.value.trim();
     if (!text) return;
     input.value = "";
+    input.style.height = "auto";
     addBubble(i, "me", text);
     addBubble(i, "coach", coachReply(routeFreeText(text), results[i]));
   }
@@ -2902,8 +2951,8 @@
           '<p class="qa-q">' + esc(it.q) + (it.real ? '　<span class="real-chip">実出題</span>' : '') + (it.est ? '　<span class="est-chip" title="収録データと業界の出題パターンからAIが推定した質問">推定</span>' : '') + progChips(it.score, it.drafts) + '</p>' +
           '<button class="like-btn' + (it.liked ? ' on' : '') + '" data-hlike="' + s.id + ':' + x.idx + '" aria-pressed="' + String(!!it.liked) + '">' + (it.liked ? '★ LIKE!済' : '☆ LIKE!') + '</button></div>' +
           (it.answer && it.answer.trim()
-            ? '<details><summary>当時の回答と添削を表示</summary><div class="qa-answer">' + esc(it.answer) + '</div><ul class="fb-list">' + fbHtml + '</ul></details>'
-            : '<details><summary>添削を表示</summary><ul class="fb-list">' + fbHtml + '</ul></details>') +
+            ? '<details><summary>当時の回答と添削を表示</summary><div class="qa-answer">' + esc(it.answer) + '</div><ul class="fb-list">' + fbHtml + '</ul>' + (it.moreBad ? '<p class="fb-more">ほかに軽微な指摘が' + it.moreBad + '件あります</p>' : '') + '</details>'
+            : '<details><summary>添削を表示</summary><ul class="fb-list">' + fbHtml + '</ul>' + (it.moreBad ? '<p class="fb-more">ほかに軽微な指摘が' + it.moreBad + '件あります</p>' : '') + '</details>') +
           draftsHtml(it.drafts) +
           polishBox("h" + s.id + "-" + x.idx);
         sec.appendChild(div);
