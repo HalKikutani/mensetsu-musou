@@ -79,3 +79,16 @@ node --check /tmp/_main_script.js
 ```
 
 デプロイは`git add index.html && git commit && git push`のみ（GitHub Pagesが自動反映、1〜2分）。
+
+## Vol 9.0: 知識ベース統合（2026-07-17 実装・実機検証完了）
+Halが共有した就活対策PDF 9本（Desktop「就活ツール：データ」）を全文抽出し`knowledge/sources/*.txt`に収録。分析と統合先マッピングは`knowledge/README.md`参照。Halと合意したVol 9.0スコープは「添削エンジン強化＋質問バンク拡充」（逆質問強化・ケースフェルミは未実装の候補として残存）。
+
+**実装内容**:
+- `KB_NG`: NG定番表現辞書（頑張りました・大変でした・安定しているから・人の役に立ちたい・グローバルに活躍したい）。`needNoEpisode`つきは実のある行動描写（構成語＋単位つき数字or主体動詞）があれば免除。志望動機系限定の`types`ガードあり。finding id=`kb_ng`（重み0.5、1回答1件まで）
+- `KB_STRENGTH_ALT`: 抽象強み語→具体的言い換え（コミュ力→傾聴力・調整力・巻き込み力等5種）。強み/intro系で裏付けなしの時のみ`vague_strength`
+- `STAR_RES`: ガクチカ系でSTAR4要素の抜けを個別指摘（`star_missing`、構成が通っている回答のみ＝`no_structure`との二重減点なし）。4要素揃いは`star_complete`で加点
+- 弱み系質問（item.qに弱み/短所）は「弱み＋改善行動セット」を評価（`weakness_no_fix`/`weakness_growth`、`KB_IMPROVE_RE`）
+- `COMMON_Q`拡充: 頻出質問50選から13問追加（first+4/middle+5/final+4、難易度★→段階マッピング、全問専用深堀り文つき）。`sig`による同一趣旨重複防止をbuildQueueのmains選択に追加（第一志望×志望度10点）
+- 検証で発見・修正: `EPISODE_RE`が「取り組んでいきたい」（抱負）に誤マッチ→否定先読みで排除
+
+**検証**: Node単体テスト27件パス（scratchpad消滅のためテストコードはこのメモの記述から再構成可）＋サブエージェントによるブラウザ実機検証（一次4回・最終2回、コンソールエラーなし、Vol8.0機能の回帰なし）。次の新規作業は**Vol 10.0**として着手する。
