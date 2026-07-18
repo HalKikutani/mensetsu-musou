@@ -719,7 +719,16 @@
       { t: "strength",   q: "友人からは、どんな人だと言われることが多いですか？",
         fu: "実際にそう言われた場面はありますか？　誰に、どんなときに言われたのか教えてください。" },
       { t: "deep",       q: "ストレスを感じたとき、どうやって解消していますか？",
-        fu: "では最近、実際に一番ストレスを感じたのはどんな場面でしたか？　そのときどう対処しましたか？" }
+        fu: "では最近、実際に一番ストレスを感じたのはどんな場面でしたか？　そのときどう対処しましたか？" },
+      /* Vol9.0: 面接頻出質問50選（knowledge/）から追加。難易度★☆☆〜★★☆＝一次向け */
+      { t: "strength",   q: "自分をひと言で表すと、どんな人ですか？",
+        fu: "そのひと言を選んだ理由になった、具体的な出来事をひとつ聞かせてください。" },
+      { t: "gakuchika",  q: "大学で最も力を入れた授業や研究について教えてください。",
+        fu: "そこで得た学びは、社会に出てからどんな場面で活かせると考えていますか？" },
+      { t: "deep",       q: "人と接するうえで心がけていることは何ですか？",
+        fu: "その心がけのおかげで人間関係がうまくいった場面を、具体的にひとつ教えてください。" },
+      { t: "deep",       q: "アルバイトやインターンでの人間関係から学んだことはありますか？",
+        fu: "その学びを得るきっかけになった出来事は？　誰との、どんな場面だったか聞かせてください。" }
     ],
     middle: [
       { t: "gakuchika",  q: "学生時代に力を入れた活動について、チームの中でのあなた自身の役割と、周囲にどんな影響を与えたかを具体的に教えてください。",
@@ -733,12 +742,24 @@
       { t: "deep",       q: "チームで意見が対立したとき、あなたはどう動きますか？　実際の経験を交えて教えてください。",
         fu: "実際にあった対立の場面をひとつ挙げてください。相手は誰で、何が原因で、あなたは何と言ったのですか？" },
       { t: "strength",   q: "あなたが苦手なタイプの人はどんな人ですか？　その人とどう付き合いますか？",
-        fu: "実際にそのタイプの人と組んだ経験はありますか？　そのとき何が起きたか聞かせてください。" }
+        fu: "実際にそのタイプの人と組んだ経験はありますか？　そのとき何が起きたか聞かせてください。" },
+      /* Vol9.0: 面接頻出質問50選から追加。難易度★★☆＝二次向け */
+      { t: "vision",     q: "仕事をするうえで、最も大切にしたい価値観は何ですか？",
+        fu: "その価値観は、どんな経験から生まれたものですか？　原体験を聞かせてください。" },
+      { t: "strength",   q: "チームで動くのと個人で動くの、どちらが得意ですか？",
+        fu: "そう言い切れる根拠になった経験を教えてください。逆の状況に置かれたら、どう動きますか？" },
+      { t: "deep",       q: "上司や先輩と意見が合わないとき、あなたはどうしますか？",
+        fu: "実際に目上の人へ自分の意見を伝えて、状況が変わった経験はありますか？" },
+      { t: "motivation", q: "大手とベンチャー、どちらが自分に合うと思いますか？　その理由も教えてください。",
+        fu: "その判断基準はどんな経験から来ていますか？　{company}はその基準にどう合致していますか？" },
+      { t: "deep",       q: "プレッシャーがかかる場面では、どう対処していますか？",
+        fu: "これまでで一番プレッシャーを感じた場面と、そのときの行動を具体的に聞かせてください。" }
     ],
     final: [
       { t: "kakugo",     q: "同業他社ではなく、なぜ{company}なのですか？",
         fu: "……同業他社でも、その理由は実現できるのではないですか？　{company}だけの決定的な違いを聞かせてください。" },
-      { t: "kakugo",     q: "当社は第一志望ですか？　他社の選考状況も含めて、率直に教えてください。",
+      { t: "kakugo",     sig: /第一志望|志望度|内定を出したら/,
+        q: "当社は第一志望ですか？　他社の選考状況も含めて、率直に教えてください。",
         fu: "では、仮に他社から先に内定が出たら、どうしますか？　正直なところを聞かせてください。" },
       { t: "vision",     q: "10年後、あなたは当社でどんな人材になっていたいですか？",
         fu: "その10年後の姿に向けて、最初の3年間で何を身につけるつもりですか？" },
@@ -747,7 +768,17 @@
       { t: "kakugo",     q: "今この場で内定を出したら、就職活動をやめますか？",
         fu: "その言葉に責任を持てますか？　迷いなく就職活動を終えると言い切れる根拠を聞かせてください。" },
       { t: "vision",     q: "あなたが人生で最も大切にしている価値観は何ですか？　それはなぜですか？",
-        fu: "その価値観が形づくられた、具体的な出来事や人との出会いはありますか？" }
+        fu: "その価値観が形づくられた、具体的な出来事や人との出会いはありますか？" },
+      /* Vol9.0: 面接頻出質問50選から追加。難易度★★★＝最終・圧迫向け */
+      { t: "deep",       q: "これまでの人生で、一番つらかったことは何ですか？",
+        fu: "そこからどうやって立ち直ったのですか？　支えになったものも含めて聞かせてください。" },
+      { t: "kakugo",     sig: /第一志望|志望度|内定を出したら/,
+        q: "当社への志望度を、10点満点で言うと何点ですか？　その理由も聞かせてください。",
+        fu: "残りの点数は、何が確認できれば埋まりますか？　率直に聞かせてください。" },
+      { t: "kakugo",     q: "転勤や、希望と違う部署への配属になっても大丈夫ですか？",
+        fu: "では、希望と違う配属になったとして、最初の1年をどう過ごしますか？" },
+      { t: "strength",   q: "あなたの学生生活を、一言で表すと何ですか？",
+        fu: "その一言を証明するエピソードを、ひとつだけ選んで聞かせてください。" }
     ]
   };
 
@@ -1955,6 +1986,22 @@
     reverse_notq: { kind: "bad", full: [
       "質問の形になっていません。逆質問は最後のアピール枠。疑問文で、意欲が伝わる聞き方に整えましょう。"
     ], xref: "" },
+    kb_ng: { kind: "bad", full: [
+      "「{w}」は面接官が最も聞き飽きているNG表現です。{adv}",
+      "ここにも「{w}」。{adv}"
+    ], xref: "Q{q}と同じく「{w}」はNG表現です。" },
+    vague_strength: { kind: "bad", full: [
+      "強みが「{w}」のままでは、他の学生と同じ言葉に埋もれます。例えば「{alt}」のように一段具体的に言い換えると、エピソードと直結して聞こえます。",
+      "ここも強みの言葉が大きすぎます。「{w}」→「{alt}」の粒度まで絞りましょう。"
+    ], xref: "Q{q}と同じく、強みの解像度が粗いままです（「{w}」）。" },
+    star_missing: { kind: "bad", full: [
+      "エピソードにSTAR（状況・課題・行動・結果）のうち「{miss}」が入っていません。{advice}",
+      "ここも「{miss}」が抜けています。{advice}"
+    ], xref: "Q{q}と同様、STARの「{miss}」が抜けています。" },
+    weakness_no_fix: { kind: "bad", full: [
+      "弱みが言いっぱなしです。「弱み→具体例→改善のための行動→現状」の順で、改善中であることまでセットで語るのが弱み回答の鉄則です。",
+      "ここも弱みに改善アクションが添えられていません。"
+    ], xref: "Q{q}と同じく、弱みの改善策が語られていません。" },
 
     length_ok: { kind: "good", full: [
       "1分前後で話し切れる、ちょうどいい密度です（{len}文字）。",
@@ -1984,6 +2031,14 @@
       "「私は」の主語で、自分の判断と行動を語れています。",
       "個人の役割が今回も明確です。"
     ], xref: "主語よし。" },
+    star_complete: { kind: "good", full: [
+      "状況・課題・行動・結果のSTAR4要素が揃っています。面接官がメモを取りやすい、教科書どおりの構成です。",
+      "ここもSTARが完全に揃っています。"
+    ], xref: "STAR構成よし。" },
+    weakness_growth: { kind: "good", full: [
+      "弱みに改善アクションをセットで添えられています。自己認識の確かさと成長意欲が同時に伝わる、正しい弱みの語り方です。",
+      "ここも弱みを改善行動で締められています。"
+    ], xref: "弱みの語り方よし。" },
     company_specific: { kind: "good", full: [
       "社名を挙げて固有の理由を語れています。「その会社でなければならない理由」は面接官が最も見ている点です。",
       "ここでも企業固有の話ができています。"
@@ -1999,13 +2054,14 @@
   /* 減点の重み: 構造的な欠陥=1点／文体レベルの軽微な癖=0.5点。スコアの説明力を上げるための重み付け */
   var BAD_WEIGHT = {
     skipped: 1, too_short: 1, no_numbers: 1, no_structure: 1, generic_motivation: 1, reverse_none: 1,
-    too_long: 0.5, no_conclusion: 0.5, no_learning: 0.5, we_only: 0.5, vague: 0.5, repetition: 0.5, hedging: 0.5, filler: 0.5, reverse_notq: 0.5
+    too_long: 0.5, no_conclusion: 0.5, no_learning: 0.5, we_only: 0.5, vague: 0.5, repetition: 0.5, hedging: 0.5, filler: 0.5, reverse_notq: 0.5,
+    star_missing: 0.5, weakness_no_fix: 0.5, vague_strength: 0.5, kb_ng: 0.5
   };
   /* too_longでも構成（課題→行動→結果）が通っていれば減点を緩和する重み（Vol8.0 仕様4） */
   var TOO_LONG_SOFT_WEIGHT = 0.25;
 
-  var BAD_PRIORITY  = ["skipped", "reverse_none", "reverse_notq", "too_short", "too_long", "no_structure", "no_numbers", "we_only", "generic_motivation", "no_learning", "no_conclusion", "vague", "repetition", "hedging", "filler"];
-  var GOOD_PRIORITY = ["company_specific", "conclusion_first", "numbers", "concrete_expression", "structure", "learning_loop", "ownership", "reverse_backed", "reverse_prepared", "length_ok"];
+  var BAD_PRIORITY  = ["skipped", "reverse_none", "reverse_notq", "too_short", "too_long", "no_structure", "no_numbers", "star_missing", "we_only", "weakness_no_fix", "vague_strength", "kb_ng", "generic_motivation", "no_learning", "no_conclusion", "vague", "repetition", "hedging", "filler"];
+  var GOOD_PRIORITY = ["company_specific", "conclusion_first", "numbers", "concrete_expression", "structure", "star_complete", "learning_loop", "ownership", "weakness_growth", "reverse_backed", "reverse_prepared", "length_ok"];
 
   /* 総評用：同じ弱点が複数問で出たときの横断コメント */
   var OVERALL_BAD = {
@@ -2020,7 +2076,9 @@
     no_learning: "{c}問でエピソードが語りっぱなしでした。「学び→今の行動」で締める型を全ネタに適用してください。",
     vague: "{c}問で抽象語が具体例の代役をしていました。「様々」を見つけたら数字か固有名詞に置換、が鉄則です。",
     repetition: "{c}問で同じ言葉の繰り返しがありました。口癖になっている言葉を1つ特定して、言い換えのストックを作りましょう。",
-    skipped: "{c}問が未回答でした。答えられなかった質問こそ、この復習ノートで潰す価値が一番高い質問です。"
+    skipped: "{c}問が未回答でした。答えられなかった質問こそ、この復習ノートで潰す価値が一番高い質問です。",
+    kb_ng: "NG定番表現が{c}問で出ました。口癖になっているフレーズを1つ特定して、行動の中身か固有名詞に言い換えるストックを作りましょう。",
+    star_missing: "{c}問でSTARの要素抜けがありました。持ちネタを全部「状況→課題→行動→結果」の4行で書き出して、抜けを埋めてから臨むのが最短です。"
   };
   var OVERALL_GOOD = {
     conclusion_first: "結論ファーストが面接を通して安定していました。この型は本番でも武器になります。",
@@ -2029,7 +2087,8 @@
     structure: "エピソードの構成力は合格レベル。素材の並べ方で迷いがありません。",
     length_ok: "回答の長さのコントロールが一貫して的確でした。",
     ownership: "どの回答でも自分の役割を主語で語れていました。",
-    learning_loop: "経験を学びに変換して締める型ができています。"
+    learning_loop: "経験を学びに変換して締める型ができています。",
+    star_complete: "エピソードがSTARの型で語れています。どの質問でも骨組みがブレないのは大きな武器です。"
   };
 
   /* 弱点軸ごとの「次の一手」 */
@@ -2072,6 +2131,38 @@
 
   var EPISODE_RE = /(課題|目標|工夫|行動|取り組|結果|改善)/;
   var LEARNING_RE = /(学び|学んだ|気づ|以来|今では|活かし|活かせ)/;
+
+  /* ================= Vol9.0: 知識ベース由来の評価辞書（knowledge/README.md参照） ================= */
+  /* NG定番表現辞書: ES例文集・ガクチカSTAR法・面接対策の「NG→改善」データより。
+     needNoEpisode=1 は、具体的な行動描写があれば口癖として流す（減点しない）もの */
+  var KB_NG = [
+    { re: /(頑張りました|頑張ってきました|一生懸命)/, adv: "「頑張った」は行動の説明になりません。何を・どう工夫して・どのくらいやったか、に置き換えましょう。", needNoEpisode: 1 },
+    { re: /大変でした/, adv: "何が大変で、どう解決したのかまで語って初めて評価の対象になります。", needNoEpisode: 1 },
+    { re: /安定している(から|ので|点|ため)/, adv: "「安定」は志望理由の中で最も評価されない言葉です。仕事の中身と社会への貢献で語り直しましょう。", types: { motivation: 1, kakugo: 1 } },
+    { re: /(人|誰か|社会)の役に立ちたい/, adv: "誰に・どんな形で、まで具体化しないと、どの会社にも言える言葉のままです。", types: { motivation: 1, kakugo: 1, vision: 1 }, needNoEpisode: 1 },
+    { re: /グローバルに活躍したい/, adv: "どの地域・どの事業領域で、何を実現したいのかまで絞りましょう。", types: { motivation: 1, kakugo: 1, vision: 1 } }
+  ];
+  /* 抽象的な強み語 → 具体的な言い換え候補（強み・弱みキーワード100選より） */
+  var KB_STRENGTH_ALT = [
+    { re: /(コミュニケーション能力|コミュニケーション力|コミュ力)/, w: "コミュニケーション力", alt: "傾聴力・調整力・巻き込み力" },
+    { re: /行動力/, w: "行動力", alt: "実行力・推進力・目標達成力" },
+    { re: /積極性/, w: "積極性", alt: "主体性・挑戦心・自走力" },
+    { re: /真面目/, w: "真面目さ", alt: "計画性・継続力・責任感" },
+    { re: /(優しさ|優しい人)/, w: "優しさ", alt: "傾聴力・共感力・気配り" }
+  ];
+  /* STAR4要素の検出（ガクチカSTAR法チェックリストより）。順番=指摘の優先度 */
+  var STAR_RES = [
+    { miss: "状況(S)", re: /([0-9０-９一二三四]年(生|次|時|の頃|から)|アルバイト|バイト先|サークル|部活|ゼミ|研究(室|会)?|インターン|留学|ボランティア)/,
+      advice: "いつ・どこで・どのくらいの規模かを冒頭に一言添えるだけで、場面が浮かぶ話になります。" },
+    { miss: "課題(T)", re: /(課題|問題|困難|壁|苦労|悩み|うまくいか|伸び悩|難航|低迷)/,
+      advice: "どんな壁があったのかが無いと、あなたの行動の価値が伝わりません。" },
+    { miss: "行動(A)", re: /(私は|私が|自ら|提案|実施|導入|作成|企画|設計|分析|工夫|取り組|改善|呼びかけ|続け)/,
+      advice: "あなた個人が何を考えどう動いたのか、施策を順序立てて語りましょう。" },
+    { miss: "結果(R)", re: /(結果|成果|達成|合格|受賞|表彰|向上|増加|改善(し|でき)|(に|へ|まで)伸ば|なりました)/,
+      advice: "ビフォーアフターの変化で締めると、再現性のある話に聞こえます。" }
+  ];
+  /* 弱み回答の「改善行動」表現（弱み40選の正解パターン: 弱み→具体例→改善行動→現状） */
+  var KB_IMPROVE_RE = /(改善|意識して|心がけ|習慣|練習|取り組んで|直す|克服|工夫する|ように(して|しており))/;
 
   function analyze(item, text, company) {
     var clean = (text || "").replace(/\s/g, "");
@@ -2161,6 +2252,41 @@
       if (teamWords && !hasI && !hasOwnVerb) add("we_only", { quote: sentWith(/(私たち|僕たち|自分たち|みんなで|チームで)/) });
       else if ((hasI || hasOwnVerb) && hasEpisode) add("ownership", { quote: hasI ? sentWith(/(私は|私が|僕は|僕が|自分は|自分が)/) : sentWith(OWN_VERB_RE) });
       if (vagueKinds >= 2 && !hasUnitNum) add("vague", { quote: sentWith(VAGUE_RE) });
+    }
+
+    /* Vol9.0: ガクチカ系はSTAR4要素の抜けを個別指摘（構成が通っている＝no_structureが出ない回答のみ。二重減点を避ける） */
+    if ((item.t === "gakuchika" || item.t === "deep") && hasEpisode && len >= 80) {
+      var starMiss = null, starAll = true;
+      for (var si = 0; si < STAR_RES.length; si++) {
+        if (!STAR_RES[si].re.test(text)) { starAll = false; if (!starMiss) starMiss = STAR_RES[si]; }
+      }
+      if (starAll) add("star_complete");
+      else add("star_missing", { miss: starMiss.miss, advice: starMiss.advice });
+    }
+
+    /* Vol9.0: 弱み系質問は「弱み＋改善行動」のセットで評価（弱み40選の正解パターン） */
+    if (item.t === "strength" && /(弱み|短所)/.test(item.q || "")) {
+      var saysWeak = /(弱み|短所|苦手|課題)/.test(text);
+      if (saysWeak && KB_IMPROVE_RE.test(text)) add("weakness_growth", { quote: sentWith(KB_IMPROVE_RE) });
+      else if (saysWeak) add("weakness_no_fix", { quote: sentWith(/(弱み|短所|苦手)/) });
+    }
+
+    /* Vol9.0: 裏付け（エピソード・数字）のない抽象的な強み語には、具体的な言い換えを提案 */
+    if ((item.t === "strength" || item.t === "intro") && !hasEpisode && !hasUnitNum) {
+      for (var ki = 0; ki < KB_STRENGTH_ALT.length; ki++) {
+        var ka = KB_STRENGTH_ALT[ki];
+        if (ka.re.test(text)) { add("vague_strength", { w: ka.w, alt: ka.alt, quote: sentWith(ka.re) }); break; }
+      }
+    }
+
+    /* Vol9.0: NG定番表現の検出（1回答につき最大1件） */
+    if (item.t !== "reverse") {
+      for (var ni = 0; ni < KB_NG.length; ni++) {
+        var ng = KB_NG[ni];
+        if (ng.types && !ng.types[item.t]) continue;
+        if (ng.needNoEpisode && hasEpisode) continue;
+        if (ng.re.test(text)) { add("kb_ng", { w: (text.match(ng.re) || [""])[0], adv: ng.adv, quote: sentWith(ng.re) }); break; }
+      }
     }
 
     /* Vol8.0 仕様6: 同一抽象語の繰り返し（vagueとは別軸。逆質問以外で判定） */
@@ -2582,7 +2708,13 @@
   }
 
   function buildQueue() {
-    var mains = shuffle(COMMON_Q[state.stage]).slice(0, 4).map(fillCompany);
+    /* Vol9.0: 共通プール拡充に伴い、sigつき同士の趣旨重複（第一志望×志望度10点など）を避けて4問選ぶ */
+    var mains = [];
+    shuffle(COMMON_Q[state.stage]).forEach(function (it) {
+      if (mains.length >= 4) return;
+      if (it.sig && mains.some(function (x) { return it.sig.test(x.q); })) return;
+      mains.push(fillCompany(it));
+    });
     var slots = [mains[0], mains[1], mains[2], mains[3]];
     state.comp = matchCompany(state.company);
 
