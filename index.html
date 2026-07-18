@@ -2129,7 +2129,8 @@
   var KATA_COMMON_RE = /(アルバイト|サークル|インターンシップ|インターン|コミュニケーション|モチベーション|エピソード|アピール|リーダーシップ|チームワーク|メンバー|イメージ|ポイント)/g;
   var KATA_PROPER_RE = /[ァ-ヴ][ァ-ヴー]{3,}/;
 
-  var EPISODE_RE = /(課題|目標|工夫|行動|取り組|結果|改善)/;
+  /* 「取り組んでいきたい」のような抱負（未来の意思表明）は行動描写とみなさない */
+  var EPISODE_RE = /(課題|目標|工夫|行動|取り組(?!んでいきたい|んでいきたく|みたい)|結果|改善)/;
   var LEARNING_RE = /(学び|学んだ|気づ|以来|今では|活かし|活かせ)/;
 
   /* ================= Vol9.0: 知識ベース由来の評価辞書（knowledge/README.md参照） ================= */
@@ -2284,7 +2285,8 @@
       for (var ni = 0; ni < KB_NG.length; ni++) {
         var ng = KB_NG[ni];
         if (ng.types && !ng.types[item.t]) continue;
-        if (ng.needNoEpisode && hasEpisode) continue;
+        /* 免除は「実のある行動描写」（構成語＋数字か主体動詞）がある場合に限る。構成語だけでは免除しない */
+        if (ng.needNoEpisode && hasEpisode && (hasUnitNum || hasOwnVerb)) continue;
         if (ng.re.test(text)) { add("kb_ng", { w: (text.match(ng.re) || [""])[0], adv: ng.adv, quote: sentWith(ng.re) }); break; }
       }
     }
