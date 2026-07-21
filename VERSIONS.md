@@ -13,7 +13,8 @@
 | 7.0 | 2026-07-14 | 面接フィードバックレポート改善: スコア説明力バグ修正／`DEEP_TYPES`拡張／メーターの参考表示／自由質問欄のtextarea化／コーチ返答分岐拡張 | [versions/Vol7.0_feedback-report-improvements.html](versions/Vol7.0_feedback-report-improvements.html) |
 | 8.0 | 2026-07-14 | 添削レポートの根拠強化: 「あなたの文章」原文引用トグル／文ごとの評価タグ／質問タイプ別の分量基準／長さと構成のトレードオフ／主体性判定の柔軟化／繰り返し語の減点＋具体表現の加点／単位つき数字の厳格検出 | [versions/Vol8.0_evidence-based-feedback.html](versions/Vol8.0_evidence-based-feedback.html) |
 | 9.0 | 2026-07-17 | 知識ベース統合: 就活データPDF9本を`knowledge/`に収録し、NG定番表現辞書／抽象強み語の言い換え提案／STAR4要素の抜け検出／弱み回答の改善行動セット評価を添削エンジンに追加。頻出質問50選から13問を段階別プールに拡充 | [versions/Vol9.0_knowledge-base-integration.html](versions/Vol9.0_knowledge-base-integration.html) |
-| **10.0** | 2026-07-20 | **Webテスト対策を新設**（面接と並ぶ第2の柱）。玉手箱・C-GABの計数2形式（四則逆算／図表の読み取り）を問題自動生成エンジンで無限出題。テスト/練習モード、難易度4段、本番準拠の制限時間＋タイムバー、練習モードはその場で正誤＋解き方解説、結果画面に見直しトグルと自己ベスト記録。AIなし・完全クライアント生成 | [versions/Vol10.0_webtest-keisuu.html](versions/Vol10.0_webtest-keisuu.html) ＝現在の`index.html` |
+| 10.0 | 2026-07-20 | **Webテスト対策を新設**（面接と並ぶ第2の柱）。玉手箱・C-GABの計数2形式（四則逆算／図表の読み取り）を問題自動生成エンジンで無限出題。テスト/練習モード、難易度4段、本番準拠の制限時間＋タイムバー、練習モードはその場で正誤＋解き方解説、結果画面に見直しトグルと自己ベスト記録。AIなし・完全クライアント生成 | [versions/Vol10.0_webtest-keisuu.html](versions/Vol10.0_webtest-keisuu.html) |
+| **10.1** | 2026-07-20 | Webテスト対策の改善: ①「はじめる」→面接/Webテストの選択画面を新設 ②選択肢を正解の近傍にクラスタ（0.4〜2.4倍に制限、100と20を混ぜない）③難易度の実質的な差別化（図表L3を多段計算＝増加率の差・上位2項目の構成比・割合のポイント差に作り直し、四則も桁をレベルで段階化） | [versions/Vol10.1_webtest-difficulty-choices.html](versions/Vol10.1_webtest-difficulty-choices.html) ＝現在の`index.html` |
 
 ## 運用ルール
 - 作業は**このリポジトリの`index.html`を直接編集**する(セッション固有のscratchpadに依存しない。scratchpadは会話が終わると消えるため)。
